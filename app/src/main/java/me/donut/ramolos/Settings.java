@@ -1,4 +1,4 @@
-package me.donut.rmls2;
+package me.donut.ramolos;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,8 +114,8 @@ public class Settings {
 
 		validPath = Utils.fileExists(path);
 
-		if (RmLogShare.getInstance().getWindow() == null) return;
-		RmLogShare.getInstance().getWindow().getSettingsTab().updatePathDisplay();
+		if (Ramolos.getInstance().getWindow() == null) return;
+		Ramolos.getInstance().getWindow().getSettingsTab().updatePathDisplay();
 	}
 
 	public void setOsAutoDetect(boolean value) {
@@ -256,11 +256,11 @@ public class Settings {
 		try {
 			properties.load(this.getClass().getResourceAsStream("/app.properties"));
 		} catch (Exception e) {}
-		RmLogShare.VERSION = String.join(".", 
+		Ramolos.VERSION = String.join(".", 
 			properties.getProperty("major", "0"),
 			properties.getProperty("minor", "0"),
 			properties.getProperty("build", "0"));
-		RmLogShare.BUILD_TIME = properties.getProperty("time");
+		Ramolos.BUILD_TIME = properties.getProperty("time");
 	}
 
 }

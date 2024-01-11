@@ -1,4 +1,4 @@
-package me.donut.rmls2;
+package me.donut.ramolos;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,7 +28,7 @@ public class LogWatcher extends Thread {
 	
 	public void run() {
 
-		Settings settings = RmLogShare.getInstance().getSettings();
+		Settings settings = Ramolos.getInstance().getSettings();
 		String lastPath = "";
 		FileTime updateTime;
 		FileTime createTime;
@@ -73,7 +73,7 @@ public class LogWatcher extends Thread {
 		while ((line = in.readLine()) != null) {
 			if (lineCount++ < lastFileLines || lastFileLines == -1) continue;
 
-			RmLogShare.getInstance().getListener().callEvent(line);
+			Ramolos.getInstance().getListener().callEvent(line);
 			if (true) continue;
 
 			line = line.substring(Math.min(11, line.length()));
@@ -86,7 +86,7 @@ public class LogWatcher extends Thread {
 			// } else {
 			// 	RmLogShare.getInstance().getSocketHandler().sendMessage("DTA " + line, true);
 			// }
-			RmLogShare.getInstance().getWindow().getChatTab().appendLine(line);
+			Ramolos.getInstance().getWindow().getChatTab().appendLine(line);
 		}
 		lastFileLines = lineCount;
 		in.close();

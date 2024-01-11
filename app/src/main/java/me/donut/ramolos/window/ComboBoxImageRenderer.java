@@ -1,4 +1,4 @@
-package me.donut.rmls2.window;
+package me.donut.ramolos.window;
 
 import java.awt.Component;
 

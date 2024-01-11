@@ -1,10 +1,10 @@
-package me.donut.rmls2.chatevents;
+package me.donut.ramolos.chatevents;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.donut.rmls2.RmLogShare;
+import me.donut.ramolos.Ramolos;
 
 public class Listener {
 	
@@ -51,11 +51,11 @@ public class Listener {
 				if (!matcher.find()) continue;
 				event.setTime(time);
 				event.setRaw(message);
-				RmLogShare.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i));
+				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i));
 				return;
 			}
 		}
-		RmLogShare.getInstance().getWindow().getChatTab().appendLine(message);
+		Ramolos.getInstance().getWindow().getChatTab().appendLine(message);
 	}
 
 	private String clearText(String input) {

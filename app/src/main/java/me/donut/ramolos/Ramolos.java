@@ -1,11 +1,11 @@
-package me.donut.rmls2;
+package me.donut.ramolos;
 
-import me.donut.rmls2.chatevents.Listener;
-import me.donut.rmls2.window.Window;
+import me.donut.ramolos.chatevents.Listener;
+import me.donut.ramolos.window.Window;
 
-public class RmLogShare {
+public class Ramolos {
 	
-	private static RmLogShare instance;
+	private static Ramolos instance;
 	public static String VERSION = "";
 	public static String BUILD_TIME = "";
 	private Window window;
@@ -13,7 +13,7 @@ public class RmLogShare {
 	private LogWatcher logWatcher;
 	private Listener listener;
 
-	public RmLogShare() {
+	public Ramolos() {
 		instance = this;
 		settings = new Settings();
 		window = new Window();
@@ -22,10 +22,10 @@ public class RmLogShare {
 	}
 
 	public static void main(String[] args) {
-		new RmLogShare();
+		new Ramolos();
 	}
 
-	public static RmLogShare getInstance() {
+	public static Ramolos getInstance() {
 		return instance;
 	}
 

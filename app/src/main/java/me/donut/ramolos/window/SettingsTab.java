@@ -1,4 +1,4 @@
-package me.donut.rmls2.window;
+package me.donut.ramolos.window;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -9,14 +9,14 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import me.donut.rmls2.RmLogShare;
-import me.donut.rmls2.Settings;
-import me.donut.rmls2.Settings.Client;
-import me.donut.rmls2.Utils;
+import me.donut.ramolos.Ramolos;
+import me.donut.ramolos.Settings;
+import me.donut.ramolos.Utils;
+import me.donut.ramolos.Settings.Client;
 
 public class SettingsTab extends JPanel {
 	
-	private Settings settings = RmLogShare.getInstance().getSettings();
+	private Settings settings = Ramolos.getInstance().getSettings();
 	private JComboBox<Integer> osCombo;
 	private JComboBox<Integer> clientCombo;
 	private JTextArea pathText;
@@ -200,8 +200,8 @@ public class SettingsTab extends JPanel {
 		JPanel footer = new JPanel();
 		footer.setAlignmentX(Component.CENTER_ALIGNMENT);
 		footer.setMaximumSize(new Dimension(300, 50));
-		JLabel credits = new JLabel("by donut - V." + RmLogShare.VERSION, SwingConstants.CENTER);
-		credits.setToolTipText("Build-Time: " + RmLogShare.BUILD_TIME);
+		JLabel credits = new JLabel("by donut - V." + Ramolos.VERSION, SwingConstants.CENTER);
+		credits.setToolTipText("Build-Time: " + Ramolos.BUILD_TIME);
 		JButton sources = new JButton("Open Source Software");
 		sources.addActionListener(e -> {
 			JPanel dialogBase = new JPanel();
@@ -209,9 +209,9 @@ public class SettingsTab extends JPanel {
 				"<html>Gradle Shadow - johnrengelman<br>" +
 				"FlatLaf - JFormDesigner<br>" + 
 				"One Dark Scheme - Mark Skelton</html>", SwingConstants.CENTER));
-			JDialog sourceDialog = new JDialog(RmLogShare.getInstance().getWindow(), "Verwendete Open Source Software", true);
+			JDialog sourceDialog = new JDialog(Ramolos.getInstance().getWindow(), "Verwendete Open Source Software", true);
 			sourceDialog.getContentPane().add(dialogBase);
-			sourceDialog.setLocationRelativeTo(RmLogShare.getInstance().getWindow());
+			sourceDialog.setLocationRelativeTo(Ramolos.getInstance().getWindow());
 			sourceDialog.pack();
 			sourceDialog.setVisible(true);
 		});

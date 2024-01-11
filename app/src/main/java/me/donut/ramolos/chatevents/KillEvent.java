@@ -1,17 +1,17 @@
-package me.donut.rmls2.chatevents;
+package me.donut.ramolos.chatevents;
 
 import java.util.regex.Matcher;
 
-import me.donut.rmls2.Utils;
+import me.donut.ramolos.Utils;
 
-public class DeathEvent extends ChatEvent {
+public class KillEvent extends ChatEvent {
 
 	private String opponent;
-	private boolean self;
+	private boolean nemesis;
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {"Du wurdest von (\\w+) getötet", "Du bist (gestorben)"};
+		return new String[] {"Du hast (deinen Nemesisgegner \\()?(\\w+)\\)? getötet"};
 	}
 
 	@Override
@@ -21,14 +21,16 @@ public class DeathEvent extends ChatEvent {
 
 	@Override
 	public String analyze(Matcher match, int key) {
-		self = key == 1;
-		opponent = self ? "" : match.group(0);
+		opponent = match.group(2);
+		nemesis = match.group(1) != null;
 
 		int[] indice = new int[] {
-			match.start(1), match.end(1)
+			nemesis ? match.start(1) : 0, nemesis ? match.end(1) - 2 : 0,
+			match.start(2), match.end(2)
 		};
 
 		String[] insertions = new String[] {
+			Utils.HL_NEMESIS[0], Utils.HL_NEMESIS[1],
 			Utils.HL_NAME[0], Utils.HL_NAME[1]
 		};
 
@@ -39,7 +41,7 @@ public class DeathEvent extends ChatEvent {
 		return opponent;
 	}
 
-	public boolean isSelf() {
-		return self;
+	public boolean isNemesis() {
+		return nemesis;
 	}
 }

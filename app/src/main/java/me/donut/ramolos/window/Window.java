@@ -1,4 +1,4 @@
-package me.donut.rmls2.window;
+package me.donut.ramolos.window;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,12 +14,12 @@ import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 
-import me.donut.rmls2.RmLogShare;
+import me.donut.ramolos.Ramolos;
 
 public class Window extends JFrame {
 
 	private static final Dimension WINDOW_SIZE = new Dimension(400, 530);
-	private static final String TITLE = "RMLS2 - RageModeLogShare";
+	private static final String TITLE = "Ramolos";
 	private static final String THEME_PATH = "/themes/one_dark.theme.json";
 
 	private static Font font;
@@ -52,7 +52,7 @@ public class Window extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				RmLogShare.getInstance().getLogWatcher().terminate();
+				Ramolos.getInstance().getLogWatcher().terminate();
 				e.getWindow().dispose();
 			}
 		});

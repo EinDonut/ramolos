@@ -1,4 +1,4 @@
-package me.donut.rmls2.chatevents;
+package me.donut.ramolos.chatevents;
 
 import java.util.regex.Matcher;
 
