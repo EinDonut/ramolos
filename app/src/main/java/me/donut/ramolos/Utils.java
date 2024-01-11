@@ -10,6 +10,8 @@ public class Utils {
 
 	public static String[] HL_NAME = new String[]{ "<b class=\"hl_name\">", "</b>"};
 	public static String[] HL_NEMESIS = new String[]{ "<b class=\"hl_nemesis\">", "</b>"};
+	public static String[] HL_ITEM = new String[]{ "<b class=\"hl_item\">", "</b>"};
+	public static String[] HL_JOIN = new String[]{ "<b class=\"hl_join\">", "</b>"};
 	
 	public static ImageIcon getIcon(String path) {
         URL imgURL = Utils.class.getResource(path);

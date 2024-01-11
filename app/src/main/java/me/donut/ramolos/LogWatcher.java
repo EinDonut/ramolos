@@ -72,21 +72,7 @@ public class LogWatcher extends Thread {
 		int lineCount = 0;
 		while ((line = in.readLine()) != null) {
 			if (lineCount++ < lastFileLines || lastFileLines == -1) continue;
-
-			Ramolos.getInstance().getListener().callEvent(line);
-			if (true) continue;
-
-			line = line.substring(Math.min(11, line.length()));
-
-			if (!line.startsWith("[Client thread/INFO]: [CHAT] [RageMode] ")) continue;		
-			line = line.substring(Math.min(40, line.length()));
-
-			// if (RmLogShare.getInstance().getUserPrompt().isTestMode()) {
-			// 	info("**TEST** " + line);
-			// } else {
-			// 	RmLogShare.getInstance().getSocketHandler().sendMessage("DTA " + line, true);
-			// }
-			Ramolos.getInstance().getWindow().getChatTab().appendLine(line);
+			Ramolos.getInstance().getListener().callChatEvent(line);
 		}
 		lastFileLines = lineCount;
 		in.close();

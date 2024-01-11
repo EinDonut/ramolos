@@ -1,6 +1,7 @@
 package me.donut.ramolos;
 
-import me.donut.ramolos.chatevents.Listener;
+import me.donut.ramolos.events.InactiveTimer;
+import me.donut.ramolos.events.Listener;
 import me.donut.ramolos.window.Window;
 
 public class Ramolos {
@@ -12,6 +13,7 @@ public class Ramolos {
 	private Settings settings;
 	private LogWatcher logWatcher;
 	private Listener listener;
+	private InactiveTimer afkTimer;
 
 	public Ramolos() {
 		instance = this;
@@ -19,6 +21,9 @@ public class Ramolos {
 		window = new Window();
 		logWatcher = new LogWatcher();
 		listener = new Listener();
+		afkTimer = new InactiveTimer();
+		
+		afkTimer.start();
 	}
 
 	public static void main(String[] args) {
@@ -43,6 +48,10 @@ public class Ramolos {
 
 	public Listener getListener() {
 		return listener;
+	}
+
+	public InactiveTimer getInactiveTimer() {
+		return afkTimer;
 	}
 
 	/**

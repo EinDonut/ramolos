@@ -1,6 +1,7 @@
 package me.donut.ramolos.window;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -30,7 +31,6 @@ public class Window extends JFrame {
 	public Window() {
 		FlatLightLaf.setup();
 		IntelliJTheme.setup(Window.class.getResourceAsStream(THEME_PATH));
-
 		setupFont();
 
 		setTitle(TITLE);

@@ -1,4 +1,4 @@
-package me.donut.ramolos.chatevents;
+package me.donut.ramolos.events.chat;
 
 import java.util.regex.Matcher;
 
@@ -7,9 +7,9 @@ public abstract class ChatEvent {
 	private int time;
 	private String raw;
 
-	abstract String[] getTranslationKeys();
-	abstract boolean hasPrefix();
-	abstract String analyze(Matcher match, int key);
+	abstract public String[] getTranslationKeys();
+	abstract public boolean hasPrefix();
+	abstract public String analyze(Matcher match, int key);
 
 	public void setTime(int time) {
 		this.time = time;
