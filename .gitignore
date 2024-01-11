@@ -1,4 +1,6 @@
 .gradle
+.vscode
+.gitignore
 **/build/
 !src/**/build/
 

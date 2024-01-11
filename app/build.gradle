@@ -1,0 +1,56 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
+plugins {
+    id 'application'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:31.1-jre'
+	implementation 'com.formdev:flatlaf:3.2.5'
+	implementation 'com.formdev:flatlaf-intellij-themes:3.2.5'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+def getCurrentTimestamp () {
+  Date today = new Date ()
+  SimpleDateFormat df = new SimpleDateFormat ("YYYY-MM-dd HH:mm:ss")
+  return df.format (today)
+}
+
+jar {
+  manifest {
+    attributes(
+      'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
+      'Main-Class': application.mainClass
+    )
+  }
+
+  Properties props = new Properties()
+  File propsFile = new File('app/src/main/resources/app.properties')
+  props.load(propsFile.newDataInputStream())
+
+  Integer nextbuildnum = (((props.getProperty('build')) as BigDecimal) + 1)
+  props.setProperty('build', nextbuildnum.toString())
+  props.setProperty('time', getCurrentTimestamp())
+  props.store(propsFile.newWriter(), null)
+  props.load(propsFile.newDataInputStream())
+}
+
+application {
+    mainClass = 'me.donut.ramolos.Ramolos'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
