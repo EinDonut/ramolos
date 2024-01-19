@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.donut.ramolos.LogWatcher;
 import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.events.chat.ChatEvent;
 import me.donut.ramolos.events.chat.DeathEvent;
 import me.donut.ramolos.events.chat.ItemEvent;
 import me.donut.ramolos.events.chat.JoinEvent;
 import me.donut.ramolos.events.chat.KillEvent;
-import me.donut.ramolos.window.ChatTab;
 
 public class Listener {
 	
@@ -29,8 +29,8 @@ public class Listener {
 
 	public void callChatEvent(String text) {
 
-		ChatTab ct = Ramolos.getInstance().getWindow().getChatTab();
-		ct.updateLinesRead(1);
+		LogWatcher lw = Ramolos.getInstance().getLogWatcher();
+		lw.addLineRead(1);
 
 		boolean hasPrefix = false;
 		String message = "";
@@ -66,7 +66,7 @@ public class Listener {
 				event.setTime(time);
 				event.setRaw(message);
 				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i));
-				ct.updateLinesEval(1);
+				lw.addLinesEvaluated(1);
 				System.out.println(Ramolos.getInstance().getInactiveTimer());
 				Ramolos.getInstance().getInactiveTimer().wake();
 				return;

@@ -35,10 +35,10 @@ public class SettingsTab extends JPanel {
 		/******* CLIENT *******/
 		JPanel client = new JPanel();
 		client.setToolTipText(
-			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
-			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es" +
-			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist" +
-			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich " +
+			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird\n" +
+			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es\n" +
+			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist\n" +
+			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich\n" +
 			"'Log-Datei' manuell bearbeitet werden.");
 		client.setMaximumSize(new Dimension(300, 110));
 		client.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -92,9 +92,9 @@ public class SettingsTab extends JPanel {
 		/******* OS *******/
 		JPanel os = new JPanel();
 		os.setToolTipText(
-			"Wähle das verwendete Betriebssystem aus. Mit der Schaltfläche" +
-			"'Auto' wird versucht das aktuellee Betriebssystem automatisch zu" +
-			"erkennen, dazu ist es gegebenfalls nötig, das Häkchen zu entfernen" +
+			"Wähle das verwendete Betriebssystem aus. Mit der Schaltfläche\n" +
+			"'Auto' wird versucht das aktuellee Betriebssystem automatisch zu\n" +
+			"erkennen, dazu ist es gegebenfalls nötig, das Häkchen zu entfernen\n" +
 			"und neu zu setzen.");
 		os.setFont(panelTitleFont);
 		os.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -143,9 +143,9 @@ public class SettingsTab extends JPanel {
 		/******* PATH *******/
 		JPanel path = new JPanel();
 		path.setToolTipText(
-			"Sind die oberen beiden Einstellungen gesetzt, wird daraus der Pfad" + 
-			"zur Log-Datei automatisch erzeugt. Ist dies nicht möglich oder wird" +
-			"ein falscher Pfad angezeigt, so kann das Häkchen 'Auto' entfernt" +
+			"Sind die oberen beiden Einstellungen gesetzt, wird daraus der Pfad\n" + 
+			"zur Log-Datei automatisch erzeugt. Ist dies nicht möglich oder wird\n" +
+			"ein falscher Pfad angezeigt, so kann das Häkchen 'Auto' entfernt\n" +
 			"werden und der Pfad manuell bearbeitet werden.");
 		path.setFont(panelTitleFont);
 		path.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -202,7 +202,7 @@ public class SettingsTab extends JPanel {
 		footer.setMaximumSize(new Dimension(300, 50));
 		JLabel credits = new JLabel("by donut - V." + Ramolos.VERSION, SwingConstants.CENTER);
 		credits.setToolTipText("Build-Time: " + Ramolos.BUILD_TIME);
-		JButton sources = new JButton("Open Source Software");
+		JButton sources = new JButton("Open Source Lizenzen");
 		sources.addActionListener(e -> {
 			JPanel dialogBase = new JPanel();
 			dialogBase.add(new JLabel(
@@ -225,7 +225,7 @@ public class SettingsTab extends JPanel {
 		add(os);
 		add(Box.createRigidArea(new Dimension(0 , 10)));
 		add(path);
-		add(Box.createRigidArea(new Dimension(0 , 10)));
+		add(Box.createRigidArea(new Dimension(0 , 50)));
 		add(footer);
 
 	}

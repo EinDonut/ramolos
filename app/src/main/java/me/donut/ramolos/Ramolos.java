@@ -1,5 +1,6 @@
 package me.donut.ramolos;
 
+import me.donut.ramolos.connection.Connector;
 import me.donut.ramolos.events.InactiveTimer;
 import me.donut.ramolos.events.Listener;
 import me.donut.ramolos.window.Window;
@@ -14,6 +15,7 @@ public class Ramolos {
 	private LogWatcher logWatcher;
 	private Listener listener;
 	private InactiveTimer afkTimer;
+	private Connector connector;
 
 	public Ramolos() {
 		instance = this;
@@ -22,6 +24,7 @@ public class Ramolos {
 		logWatcher = new LogWatcher();
 		listener = new Listener();
 		afkTimer = new InactiveTimer();
+		connector = new Connector();
 		
 		afkTimer.start();
 	}
@@ -54,13 +57,7 @@ public class Ramolos {
 		return afkTimer;
 	}
 
-	/**
-	 * Represent the minecraft client type
-	 */
-	public enum Client {
-		VANILLA,
-		BADLION,
-		LUNAR,
-		LABYMOD
+	public Connector getConnector() {
+		return connector;
 	}
 }

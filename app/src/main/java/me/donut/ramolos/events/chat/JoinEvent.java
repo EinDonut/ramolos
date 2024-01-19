@@ -9,7 +9,7 @@ public class JoinEvent extends ChatEvent {
 	@Override
 	public String[] getTranslationKeys() {
 		return new String[] {
-			"Teams sind auf diesem Server VERBOTEN und werden mit einem Ban bestraft!", 
+			"Teams sind auf diesem Server VERBOTEN und werden mit einem Ban bestraft!"
 		};
 	}
 

@@ -3,6 +3,7 @@ package me.donut.ramolos.events.chat;
 import java.util.regex.Matcher;
 
 import me.donut.ramolos.Utils;
+import me.donut.ramolos.connection.KillPacket;
 
 public class KillEvent extends ChatEvent {
 
@@ -23,6 +24,8 @@ public class KillEvent extends ChatEvent {
 	public String analyze(Matcher match, int key) {
 		opponent = match.group(2);
 		nemesis = match.group(1) != null;
+
+		new KillPacket(opponent, nemesis);
 
 		int[] indice = new int[] {
 			nemesis ? match.start(1) : 0, nemesis ? match.end(1) - 2 : 0,

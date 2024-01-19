@@ -3,6 +3,7 @@ package me.donut.ramolos.events.chat;
 import java.util.regex.Matcher;
 
 import me.donut.ramolos.Utils;
+import me.donut.ramolos.connection.DeathPacket;
 
 public class DeathEvent extends ChatEvent {
 
@@ -11,7 +12,7 @@ public class DeathEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {"Du wurdest von (\\w+) getötet", "Du bist (gestorben)"};
+		return new String[] { "Du wurdest von (\\w+) getötet", "Du bist (gestorben)" };
 	}
 
 	@Override
@@ -23,6 +24,8 @@ public class DeathEvent extends ChatEvent {
 	public String analyze(Matcher match, int key) {
 		self = key == 1;
 		opponent = self ? "" : match.group(0);
+
+		new DeathPacket(opponent, self);
 
 		int[] indice = new int[] {
 			match.start(1), match.end(1)

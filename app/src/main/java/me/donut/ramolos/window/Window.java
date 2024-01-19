@@ -1,7 +1,6 @@
 package me.donut.ramolos.window;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -19,25 +18,27 @@ import me.donut.ramolos.Ramolos;
 
 public class Window extends JFrame {
 
-	private static final Dimension WINDOW_SIZE = new Dimension(400, 530);
+	private static final Dimension WINDOW_SIZE = new Dimension(416, 550);
 	private static final String TITLE = "Ramolos";
 	private static final String THEME_PATH = "/themes/one_dark.theme.json";
 
 	private static Font font;
 
+	private JFrame frame;
 	private ChatTab chatTab;
 	private SettingsTab settingsTab;
+	private ConnectionTab connectionTab;
+	private StatsTab statsTab;
 	
 	public Window() {
+		frame = this;
 		FlatLightLaf.setup();
 		IntelliJTheme.setup(Window.class.getResourceAsStream(THEME_PATH));
 		setupFont();
 
 		setTitle(TITLE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
-		setUndecorated(false);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -52,15 +53,32 @@ public class Window extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Ramolos.getInstance().getLogWatcher().terminate();
-				e.getWindow().dispose();
+
+				if (!Ramolos.getInstance().getConnector().isConnected()) {
+					e.getWindow().dispose();
+					return;
+				}
+
+				int response = JOptionPane.showConfirmDialog(
+					frame, 
+					"Die Verbindung zum Server wird abgebrochen wenn du das Fenster schließt, trotzdem schließen?",
+					"Verbindung trennen?", 
+					JOptionPane.YES_NO_OPTION);
+				if (response == JOptionPane.YES_OPTION) {
+					Ramolos.getInstance().getLogWatcher().terminate();
+					Ramolos.getInstance().getConnector().disconnect();
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				} else {
+					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				}
 			}
 		});
 		
 		JTabbedPane tabs = new JTabbedPane();
 		addTab(tabs, "Chat", (chatTab = new ChatTab()), 0);
-		addTab(tabs, "Verbindung", setupConnectionTab(), 1);
-		addTab(tabs, "Einstellungen", (settingsTab = new SettingsTab()), 2);
+		addTab(tabs, "Statistiken", (statsTab = new StatsTab()), 1);
+		addTab(tabs, "Verbindung", (connectionTab = new ConnectionTab()), 2);
+		addTab(tabs, "Einstellungen", (settingsTab = new SettingsTab()), 3);
 
 		setContentPane(tabs);
 		setVisible(true);
@@ -68,8 +86,8 @@ public class Window extends JFrame {
 
 	private void addTab(JTabbedPane tabs, String title, JPanel panel, int index) {
 		JLabel label = new JLabel(title, SwingConstants.CENTER);
-		label.setFont(font);
-		label.setPreferredSize(new Dimension(104, 30));
+		label.setFont(new Font(font.getName(), Font.PLAIN, 20));
+		label.setPreferredSize(new Dimension(76, 30));
 		tabs.add(panel);
 		tabs.setTabComponentAt(index, label);
 	}
@@ -85,13 +103,6 @@ public class Window extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
-	private JPanel setupConnectionTab() {
-		JPanel result = new JPanel();
-
-		return result;
-	}
-
 	public static Font getCustomFont() {
 		return font;
 	}
@@ -102,6 +113,14 @@ public class Window extends JFrame {
 
 	public SettingsTab getSettingsTab() {
 		return settingsTab;
+	}
+
+	public ConnectionTab getConnectionTab() {
+		return connectionTab;
+	}
+
+	public StatsTab getStatsTab() {
+		return statsTab;
 	}
 
 }

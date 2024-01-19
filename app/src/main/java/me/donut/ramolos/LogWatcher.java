@@ -22,6 +22,10 @@ public class LogWatcher extends Thread {
 	private boolean forcePause = false;
 	private boolean stop = false;
 
+	private int linesRead = 0;
+	private int linesEvaluated = 0;
+	private int linesTransmitted = 0;
+
 	public LogWatcher() {
 		start();
 	}
@@ -80,5 +84,35 @@ public class LogWatcher extends Thread {
 
 	public void terminate() {
 		stop = true;
+	}
+
+	public void addLineRead(int add) {
+		linesRead += add;
+		if (add < 0) linesRead = 0;
+		Ramolos.getInstance().getWindow().getChatTab().updateLinesRead(linesRead);
+	}
+
+	public int getLinesRead() {
+		return linesRead;
+	}
+
+	public void addLinesEvaluated(int add) {
+		linesEvaluated += add;
+		if (add < 0) linesEvaluated = 0;
+		Ramolos.getInstance().getWindow().getChatTab().updateLinesEval(linesEvaluated);
+	}
+
+	public int getLinesEvaluated() {
+		return linesEvaluated;
+	}
+
+	public void addLineTransmitted(int add) {
+		linesTransmitted += add;
+		if (add < 0) linesTransmitted = 0;
+		Ramolos.getInstance().getWindow().getChatTab().updateLinesTransmitted(linesTransmitted);
+	}
+
+	public int getLinesTransmitted() {
+		return linesTransmitted;
 	}
 }
