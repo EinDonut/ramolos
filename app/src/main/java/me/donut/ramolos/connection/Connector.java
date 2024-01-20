@@ -67,6 +67,7 @@ public class Connector {
 			connected = !clientSocket.isClosed();
 		}
 		setAuthenticated(false);
+		ct.setAdminToolsVisible(false);
 		updateConnectionStatus(connected);
 		blockConnectionButton(false);
 	}

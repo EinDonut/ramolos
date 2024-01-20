@@ -18,7 +18,7 @@ import me.donut.ramolos.Ramolos;
 
 public class Window extends JFrame {
 
-	private static final Dimension WINDOW_SIZE = new Dimension(416, 550);
+	public static final Dimension WINDOW_SIZE = new Dimension(416, 550);
 	private static final String TITLE = "Ramolos";
 	private static final String THEME_PATH = "/themes/one_dark.theme.json";
 
@@ -36,7 +36,7 @@ public class Window extends JFrame {
 		IntelliJTheme.setup(Window.class.getResourceAsStream(THEME_PATH));
 		setupFont();
 
-		setTitle(TITLE);
+		setTitle(TITLE + " - " + Ramolos.VERSION);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
 		setLocationRelativeTo(null);
@@ -53,8 +53,8 @@ public class Window extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-
 				if (!Ramolos.getInstance().getConnector().isConnected()) {
+					Ramolos.getInstance().terminate();
 					e.getWindow().dispose();
 					return;
 				}
@@ -65,8 +65,7 @@ public class Window extends JFrame {
 					"Verbindung trennen?", 
 					JOptionPane.YES_NO_OPTION);
 				if (response == JOptionPane.YES_OPTION) {
-					Ramolos.getInstance().getLogWatcher().terminate();
-					Ramolos.getInstance().getConnector().disconnect();
+					Ramolos.getInstance().terminate();
 					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				} else {
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

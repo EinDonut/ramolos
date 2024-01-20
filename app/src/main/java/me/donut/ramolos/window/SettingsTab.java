@@ -149,7 +149,7 @@ public class SettingsTab extends JPanel {
 			"werden und der Pfad manuell bearbeitet werden.");
 		path.setFont(panelTitleFont);
 		path.setAlignmentX(Component.CENTER_ALIGNMENT);
-		path.setMaximumSize(new Dimension(300, 175));
+		path.setMaximumSize(new Dimension(300, 210));
 		path.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createLineBorder(borderColor),
 			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -188,7 +188,7 @@ public class SettingsTab extends JPanel {
 		pathText.setFont(panelTitleFont);
 
 		pathHint = new JLabel("", SwingConstants.CENTER);
-		pathHint.setFont(hintFont);
+		pathHint.setFont(panelTitleFont);
 		pathHint.setPreferredSize(new Dimension(150, 40));
 		updatePathDisplay();
 		
@@ -247,7 +247,7 @@ public class SettingsTab extends JPanel {
 	public void updatePathDisplay() {
 		pathText.setText(settings.getPath());
 		pathHint.setText(settings.isValidPath() ? "Datei gefunden" : "Datei nicht gefunden");
-		pathHint.setForeground(settings.isValidPath() ? Color.GREEN : Color.RED);
+		pathHint.setForeground(Color.decode(settings.isValidPath() ? Utils.COLOR_GREEN : Utils.COLOR_RED));
 
 		pathButton.setEnabled(!settings.isAutoDetectPath());
 		osCombo.setEnabled(!settings.isAutoDetectSystem() && settings.isAutoDetectPath());

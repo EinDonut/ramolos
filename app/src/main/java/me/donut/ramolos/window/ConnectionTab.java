@@ -23,6 +23,8 @@ public class ConnectionTab extends JPanel {
 	private JTextField tfID;
 	private JButton connect;
 	private JTable infoTable;
+	private JTextField serverMessage;
+	private JPanel adminTools;
 
 	public ConnectionTab() {
 
@@ -108,6 +110,14 @@ public class ConnectionTab extends JPanel {
 		c.gridy = 2;
 		params.add(connect, c);
 
+		/******* Message *******/
+		serverMessage = new JTextField();
+		serverMessage.setHorizontalAlignment(JTextField.CENTER);
+		serverMessage.setMaximumSize(new Dimension(Window.WINDOW_SIZE.width, 20));
+		serverMessage.setFont(defaultFont);
+		serverMessage.setEditable(false);
+		serverMessage.setBorder(null);
+
 		/******* Status *******/
 		JPanel status = new JPanel();
 
@@ -131,7 +141,6 @@ public class ConnectionTab extends JPanel {
 		String[][] data = {
 			{ "Verbindungsstatus", "-" },
 			{ "Dein Name", "-" },
-			{ "Clients verbunden", "0" },
 			{ "Pakete empfangen", "0" },
 			{ "Pakete gesendet", "0"}
 		};
@@ -139,19 +148,65 @@ public class ConnectionTab extends JPanel {
 		infoTable = new JTable(data, new String[] {"", ""});
 		infoTable.setFont(defaultFont);
 		infoTable.setFocusable(false);
-		infoTable.setPreferredSize(new Dimension(250, 120));
+		infoTable.setPreferredSize(new Dimension(250, 100));
 		infoTable.setRowHeight(23);
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
 		infoTable.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
 		status.add(infoTable);
 
+		/******* AdminTools *******/
+		adminTools = new JPanel();
+		adminTools.setVisible(false);
+		adminTools.setLayout(new GridBagLayout());
+		GridBagConstraints atc = new GridBagConstraints();
+
+		adminTools.setToolTipText(
+			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
+			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es" +
+			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist" +
+			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich " +
+			"'Log-Datei' manuell bearbeitet werden.");
+		adminTools.setMaximumSize(new Dimension(300, 120));
+		adminTools.setAlignmentX(Component.CENTER_ALIGNMENT);
+		adminTools.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(borderColor),
+			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		adminTools.setBorder(BorderFactory.createTitledBorder(
+			adminTools.getBorder(), "Admin-Tools", 
+			TitledBorder.DEFAULT_JUSTIFICATION, 
+			TitledBorder.DEFAULT_POSITION, panelTitleFont));
+
+		JButton btnStart = new JButton("Start");
+		btnStart.setFont(defaultFont);
+		JButton btnStop = new JButton("Stopp");
+		btnStop.setFont(defaultFont);
+		JButton btnExport = new JButton("Export");
+		btnExport.setFont(defaultFont);
+
+		// atc.insets = new Insets(0, 10, 0, 10);
+		atc.fill = GridBagConstraints.HORIZONTAL;
+		atc.gridx = 0;
+		atc.gridy = 0;
+		adminTools.add(btnStart, atc);	
+		atc.gridx = 1;
+		adminTools.add(btnStop, atc);
+		atc.gridx = 0;
+		atc.gridy = 1;
+		atc.gridwidth = 2;
+		adminTools.add(btnExport, atc);		
+
 		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(params);
-		add(Box.createRigidArea(new Dimension(0, 5)));
+		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(status);
+		add(Box.createRigidArea(new Dimension(0, 10)));
+		add(adminTools);
+		add(Box.createVerticalGlue());
+		add(serverMessage);
 
 		updateConnectionStatus(false);
+		updateServerMessage("Testmessage!", Utils.COLOR_GREEN);
 	}
 
 	public void updateConnectionStatus(boolean connected) {
@@ -168,10 +223,6 @@ public class ConnectionTab extends JPanel {
 		connect.setText(connected ? "Trennen" : "Verbinden");
 	}
 
-	public void updateConnectedClients(int clients) {
-		infoTable.setValueAt("" + clients, 2, 1);
-	}
-
 	public void updateReceivedPackets(int packets) {
 		infoTable.setValueAt("" + packets, 3, 1);
 	}
@@ -182,6 +233,15 @@ public class ConnectionTab extends JPanel {
 
 	public void updateUserName(String username) {
 		infoTable.setValueAt(username, 1, 1);
+	}
+
+	public void updateServerMessage(String message, String color) {
+		serverMessage.setText(message);
+		serverMessage.setForeground(color.equals("") ? null : Color.decode(color));
+	}
+
+	public void setAdminToolsVisible(boolean enabled) {
+		adminTools.setVisible(enabled);
 	}
 
 	public String getUserIdEntry() {
