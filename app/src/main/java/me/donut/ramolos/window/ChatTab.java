@@ -65,6 +65,7 @@ public class ChatTab extends JPanel {
 		infoTable = new JTable(data, new String[] {"", ""});
 		infoTable.setFont(font);
 		infoTable.setFocusable(false);
+		infoTable.setRowSelectionAllowed(false);
 		infoTable.setPreferredSize(new Dimension(150, 100));
 		infoTable.setRowHeight(23);
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();

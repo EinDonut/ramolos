@@ -12,12 +12,15 @@ import me.donut.ramolos.window.ConnectionTab;
 
 public class Connector {
 	
-	private final String HOST = "localhost";
+	private final String HOST = "ragearrows.de";
 	private boolean connected;
 	private Socket clientSocket;
 	private SocketReader reader;
 	private SocketWriter writer;
 	private boolean authenticated;
+	private boolean adminMode;
+	private int packetsSent;
+	private int packetsReceived;
 	private int port = 0;
 
 	private ConnectionTab ct = Ramolos.getInstance().getWindow().getConnectionTab();
@@ -67,9 +70,13 @@ public class Connector {
 			connected = !clientSocket.isClosed();
 		}
 		setAuthenticated(false);
-		ct.setAdminToolsVisible(false);
+		setAdminMode(false);
 		updateConnectionStatus(connected);
 		blockConnectionButton(false);
+		updatePacketsSent(-1);
+		updatePacketsReceived(-1);
+		ct.updateUserName("-");
+		ct.updateServerMessage("", "");
 	}
 	
 	private void blockConnectionButton(boolean block) {
@@ -113,9 +120,40 @@ public class Connector {
 		this.authenticated = value;
 	}
 
+	public boolean isAdminMode() {
+		return adminMode;
+	}
+
+	public void setAdminMode(boolean value) {
+		adminMode = value;
+		Ramolos.getInstance().getWindow().getConnectionTab().setAdminToolsVisible(value);
+		if (!adminMode) return;
+		new SetupPacket();
+	}
+
 	public void write(String message) {
 		if (!connected) return;
 		writer.write(message);
+	}
+
+	public int getPacketsReceived() {
+		return packetsReceived;
+	}
+
+	public void updatePacketsReceived(int value) {
+		packetsReceived += value;
+		if (value == -1) packetsReceived = 0;
+		ct.updateReceivedPackets(packetsReceived);
+	}
+
+	public int getPacketsSent() {
+		return packetsSent;
+	}
+
+	public void updatePacketsSent(int value) {
+		packetsSent += value;
+		if (value == -1) packetsSent = 0;
+		ct.updateSentPackets(packetsSent);
 	}
 
 	private class SocketReader extends Thread {
@@ -151,10 +189,15 @@ public class Connector {
 						case 1:
 							new LoginPacket(args);
 							break;
+						case 4:
+							new TournmanetPacket(args);
+							break;
+						case 5:
+							new SetupPacket(args);
 						default:
 							continue;
 					}
-					ct.updateReceivedPackets(1);
+					updatePacketsReceived(1);
 				}
 			} catch (IOException ex) { }
 		}
@@ -183,6 +226,7 @@ public class Connector {
 		@Override
 		public void run() {
 			try {
+				new LoginPacket(Ramolos.getInstance().getWindow().getConnectionTab().getUserIdEntry());
 				Thread.sleep(1000);
 				if (isAuthenticated()) return;
 				ct.updateUserIdValidity(false);

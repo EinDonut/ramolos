@@ -13,6 +13,7 @@ public class Utils {
 	public static final String[] HL_ITEM = new String[]{ "<b class=\"hl_item\">", "</b>"};
 	public static final String[] HL_JOIN = new String[]{ "<b class=\"hl_join\">", "</b>"};
 
+	public static final String COLOR_PLACEHOLDER = "<html><font color='%s'>%s</font></html>";
 	public static final String COLOR_RED = "#bd3c5f";
 	public static final String COLOR_GREEN = "#239E62";
 	

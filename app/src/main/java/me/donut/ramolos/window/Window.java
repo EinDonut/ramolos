@@ -39,6 +39,7 @@ public class Window extends JFrame {
 		setTitle(TITLE + " - " + Ramolos.VERSION);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -55,7 +56,8 @@ public class Window extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				if (!Ramolos.getInstance().getConnector().isConnected()) {
 					Ramolos.getInstance().terminate();
-					e.getWindow().dispose();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					e.getWindow().dispose();;
 					return;
 				}
 
@@ -66,7 +68,7 @@ public class Window extends JFrame {
 					JOptionPane.YES_NO_OPTION);
 				if (response == JOptionPane.YES_OPTION) {
 					Ramolos.getInstance().terminate();
-					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				} else {
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}

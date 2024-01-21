@@ -16,15 +16,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Utils;
+import me.donut.ramolos.connection.TournmanetPacket;
 
 public class ConnectionTab extends JPanel {
 	
 	private JTextField tfPort;
-	private JTextField tfID;
+	private JPasswordField tfID;
 	private JButton connect;
 	private JTable infoTable;
 	private JTextField serverMessage;
 	private JPanel adminTools;
+	private AdminWindow adminWindow;
 
 	public ConnectionTab() {
 
@@ -77,11 +79,11 @@ public class ConnectionTab extends JPanel {
 
 		tfPort = new JTextField("" + Ramolos.getInstance().getSettings().getPort());
 		tfPort.setFont(defaultFont);
-		tfPort.setPreferredSize(new Dimension(150, 50));
 		tfPort.addKeyListener(resetErrorListener);
 
-		tfID = new JTextField();
+		tfID = new JPasswordField(Ramolos.getInstance().getSettings().getUserID());
 		tfID.setFont(defaultFont);
+		tfID.addKeyListener(resetErrorListener);
 
 		connect = new JButton("Verbinden");
 		connect.setFont(defaultFont);
@@ -148,6 +150,7 @@ public class ConnectionTab extends JPanel {
 		infoTable = new JTable(data, new String[] {"", ""});
 		infoTable.setFont(defaultFont);
 		infoTable.setFocusable(false);
+		infoTable.setRowSelectionAllowed(false);
 		infoTable.setPreferredSize(new Dimension(250, 100));
 		infoTable.setRowHeight(23);
 		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
@@ -179,10 +182,25 @@ public class ConnectionTab extends JPanel {
 
 		JButton btnStart = new JButton("Start");
 		btnStart.setFont(defaultFont);
+		btnStart.addActionListener(e -> {
+			if (!Ramolos.getInstance().getConnector().isAdminMode()) return;
+			new TournmanetPacket("start");
+		});
+
 		JButton btnStop = new JButton("Stopp");
 		btnStop.setFont(defaultFont);
-		JButton btnExport = new JButton("Export");
-		btnExport.setFont(defaultFont);
+		btnStop.addActionListener(e -> {
+			if (!Ramolos.getInstance().getConnector().isAdminMode()) return;
+			new TournmanetPacket("stop");
+		});
+
+		JButton btnAdvanced = new JButton("Erweitert");
+		btnAdvanced.setFont(defaultFont);
+		btnAdvanced.addActionListener(e -> {
+			if (Ramolos.getInstance().getSetup().isRunning()) return;
+			if (!Ramolos.getInstance().getConnector().isAdminMode()) return;
+			adminWindow = new AdminWindow();
+		});
 
 		// atc.insets = new Insets(0, 10, 0, 10);
 		atc.fill = GridBagConstraints.HORIZONTAL;
@@ -194,7 +212,7 @@ public class ConnectionTab extends JPanel {
 		atc.gridx = 0;
 		atc.gridy = 1;
 		atc.gridwidth = 2;
-		adminTools.add(btnExport, atc);		
+		adminTools.add(btnAdvanced, atc);		
 
 		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(params);
@@ -224,11 +242,11 @@ public class ConnectionTab extends JPanel {
 	}
 
 	public void updateReceivedPackets(int packets) {
-		infoTable.setValueAt("" + packets, 3, 1);
+		infoTable.setValueAt("" + packets, 2, 1);
 	}
 
 	public void updateSentPackets(int packets) {
-		infoTable.setValueAt("" + packets, 4, 1);
+		infoTable.setValueAt("" + packets, 3, 1);
 	}
 
 	public void updateUserName(String username) {
@@ -245,11 +263,15 @@ public class ConnectionTab extends JPanel {
 	}
 
 	public String getUserIdEntry() {
-		return tfID.getText();
+		return new String(tfID.getPassword());
 	}
 
 	public String getPortEntry() {
 		return tfPort.getText();
+	}
+
+	public AdminWindow getAdminWindow() {
+		return adminWindow;
 	}
 
 	public void updatePortValidity(boolean valid) {

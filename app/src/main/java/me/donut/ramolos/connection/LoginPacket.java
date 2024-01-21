@@ -11,16 +11,16 @@ public class LoginPacket extends Packet {
 	}
 
 	public LoginPacket(String[] args) {
-		// id authenticated name admin
-		if (args.length != 3) return;
+		if (args.length != 4) return;
 		ConnectionTab ct = Ramolos.getInstance().getWindow().getConnectionTab();
 		boolean loggedIn = Boolean.valueOf(args[1]);
 		boolean isAdmin = Boolean.valueOf(args[3]);
 		Ramolos.getInstance().getConnector().setAuthenticated(loggedIn);
 		if (!loggedIn) return;
+		Ramolos.getInstance().getSettings().setUserID(Ramolos.getInstance().getWindow().getConnectionTab().getUserIdEntry());
 		ct.updateConnectionStatus(true);
 		ct.updateUserName(args[2]);
-		ct.setAdminToolsVisible(isAdmin);
+		Ramolos.getInstance().getConnector().setAdminMode(isAdmin);
 	}
 
 	public LoginPacket(String userID) {

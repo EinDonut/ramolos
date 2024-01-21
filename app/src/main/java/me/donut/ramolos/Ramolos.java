@@ -1,6 +1,5 @@
 package me.donut.ramolos;
 
-import javafx.scene.chart.PieChart.Data;
 import me.donut.ramolos.connection.Connector;
 import me.donut.ramolos.events.InactiveTimer;
 import me.donut.ramolos.events.Listener;
@@ -18,6 +17,8 @@ public class Ramolos {
 	private Listener listener;
 	private InactiveTimer afkTimer;
 	private Connector connector;
+	private DatabaseConnection dbConnection;
+	private Setup setup;
 
 	public Ramolos() {
 		instance = this;
@@ -27,7 +28,9 @@ public class Ramolos {
 		listener = new Listener();
 		afkTimer = new InactiveTimer();
 		connector = new Connector();
-		
+		dbConnection = new DatabaseConnection();
+		setup = new Setup();
+
 		afkTimer.start();
 	}
 
@@ -42,6 +45,7 @@ public class Ramolos {
 	public void terminate() {
 		logWatcher.terminate();
 		connector.disconnect();
+		dbConnection.disconnect();
 	}
 
 	public Window getWindow() {
@@ -66,5 +70,9 @@ public class Ramolos {
 
 	public Connector getConnector() {
 		return connector;
+	}
+
+	public Setup getSetup() {
+		return setup;
 	}
 }

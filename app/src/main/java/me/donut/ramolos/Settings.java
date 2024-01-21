@@ -23,6 +23,7 @@ public class Settings {
 	private String logPath;
 	private boolean validPath = false;
 	private int port;
+	private String userID;
 
 	private final String CLIENT_AUTO = "settings.autoDetect.client";
 	private final String OS_AUTO = "settings.autoDetect.os";
@@ -31,6 +32,7 @@ public class Settings {
 	private final String LOG_PATH = "settings.logPath";
 	private final String LOG_PATH_AUTO = "settings.autoDetect.logPath";
 	private final String PORT = "settings.port";
+	private final String USERID = "settings.userId";
 
 	public Settings() {
 		loadBuildNr();
@@ -44,6 +46,7 @@ public class Settings {
 		autoDetectOS = prefs.getBoolean(OS_AUTO, true);
 		autoDetectPath = prefs.getBoolean(LOG_PATH_AUTO, true);
 		port = prefs.getInt(PORT, 4000);
+		userID = prefs.get(USERID, "");
 
 		client = Client.values()[prefs.getInt(CLIENT, 0)];
 		osSystem = OsSystem.values()[prefs.getInt(OS, 0)];
@@ -201,6 +204,15 @@ public class Settings {
 	public void setPort(int port) {
 		this.port = port;
 		prefs.putInt(PORT, port);
+	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+		prefs.put(USERID, userID);
 	}
 
 	public enum OsSystem {
