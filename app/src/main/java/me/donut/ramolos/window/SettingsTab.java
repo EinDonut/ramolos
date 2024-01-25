@@ -13,6 +13,7 @@ import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Settings;
 import me.donut.ramolos.Utils;
 import me.donut.ramolos.Settings.Client;
+import me.donut.ramolos.connection.Updater;
 
 public class SettingsTab extends JPanel {
 	
@@ -199,25 +200,34 @@ public class SettingsTab extends JPanel {
 
 		JPanel footer = new JPanel();
 		footer.setAlignmentX(Component.CENTER_ALIGNMENT);
-		footer.setMaximumSize(new Dimension(300, 50));
-		JLabel credits = new JLabel("by donut - V." + Ramolos.VERSION, SwingConstants.CENTER);
-		credits.setToolTipText("Build-Time: " + Ramolos.BUILD_TIME);
+		footer.setMaximumSize(new Dimension(300, 80));
+		JLabel credits = new JLabel("by donut - V." + 
+			Ramolos.getInstance().getUpdater().getCurrentVersion(), SwingConstants.CENTER);
+		credits.setToolTipText("Build-Time: " + 
+			Ramolos.getInstance().getUpdater().getBuildTime());
+		credits.setPreferredSize(new Dimension(300, 20));
+		credits.setFont(hintFont);
 		JButton sources = new JButton("Open Source Lizenzen");
+		sources.setFont(hintFont);
 		sources.addActionListener(e -> {
-			JPanel dialogBase = new JPanel();
-			dialogBase.add(new JLabel(
-				"<html>Gradle Shadow - johnrengelman<br>" +
-				"FlatLaf - JFormDesigner<br>" + 
-				"One Dark Scheme - Mark Skelton</html>", SwingConstants.CENTER));
-			JDialog sourceDialog = new JDialog(Ramolos.getInstance().getWindow(), "Verwendete Open Source Software", true);
-			sourceDialog.getContentPane().add(dialogBase);
-			sourceDialog.setLocationRelativeTo(Ramolos.getInstance().getWindow());
-			sourceDialog.pack();
-			sourceDialog.setVisible(true);
+			JOptionPane.showMessageDialog(Ramolos.getInstance().getWindow(), 
+				"Gradle Shadow - johnrengelman\n" +
+				"FlatLaf - JFormDesigner\n" + 
+				"One Dark Scheme - Mark Skelton", 
+				"Verwendete Open Source Software", JOptionPane.PLAIN_MESSAGE);
+		});
+
+		JButton changelog = new JButton("Changelog");
+		changelog.setFont(hintFont);
+		changelog.addActionListener(e -> {
+			Updater updater = Ramolos.getInstance().getUpdater();
+			JOptionPane.showMessageDialog(Ramolos.getInstance().getWindow(), updater.getChangelog(), 
+				"Changelog - " + updater.getCurrentVersion(), JOptionPane.PLAIN_MESSAGE);
 		});
 
 		footer.add(credits);
 		footer.add(sources);
+		footer.add(changelog);
 
 		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(client);
@@ -225,7 +235,7 @@ public class SettingsTab extends JPanel {
 		add(os);
 		add(Box.createRigidArea(new Dimension(0 , 10)));
 		add(path);
-		add(Box.createRigidArea(new Dimension(0 , 50)));
+		add(Box.createRigidArea(new Dimension(0 , 30)));
 		add(footer);
 
 	}

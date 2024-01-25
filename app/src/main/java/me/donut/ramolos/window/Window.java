@@ -1,12 +1,14 @@
 package me.donut.ramolos.window;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
 import java.util.List;
 import java.awt.event.WindowEvent;
+import java.net.URI;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.*;
@@ -15,6 +17,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 
 import me.donut.ramolos.Ramolos;
+import me.donut.ramolos.connection.Updater;
 
 public class Window extends JFrame {
 
@@ -36,7 +39,7 @@ public class Window extends JFrame {
 		IntelliJTheme.setup(Window.class.getResourceAsStream(THEME_PATH));
 		setupFont();
 
-		setTitle(TITLE + " - " + Ramolos.VERSION);
+		setTitle(TITLE + " - " + Ramolos.getInstance().getUpdater().getCurrentVersion());
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,6 +53,7 @@ public class Window extends JFrame {
 				requestFocus();
 			}
 		});
+
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -122,6 +126,54 @@ public class Window extends JFrame {
 
 	public StatsTab getStatsTab() {
 		return statsTab;
+	}
+
+	public void showSimpleInfoDialog(String message, String title) {
+		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void showOutdatedClientMessage() {
+		Updater updater = Ramolos.getInstance().getUpdater();
+		if (updater.isUpToDate()) return;
+
+		int doUpdate = JOptionPane.showConfirmDialog(frame, "Eine neue Version von Ramolos ist"
+			+ " verfügbar. Einige Funktionen sind gesperrt und es können "
+			+ "Fehler aufteten. Möchtest du die neuste Version installieren?",
+			"Neue Version verfügbar", JOptionPane.YES_NO_OPTION);
+		
+		if (doUpdate != JOptionPane.YES_OPTION) {
+			setTitle(getTitle() + " (outdated)");
+			return;
+		}
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			try { 
+				Desktop.getDesktop().browse(new URI(Updater.URL_BASE + Updater.URL_VERSION));
+				Ramolos.getInstance().terminate();
+				dispose();
+				return; 
+			} catch (Exception ex) {}
+		}
+		showSimpleInfoDialog("Die neuste Version von Ramolos ist unter dieser URL verfügbar: " +
+		Updater.URL_BASE + Updater.URL_DOWNLOAD
+		, "Update herunterladen");
+	}
+
+	public void showChangelog() {
+		Updater updater = Ramolos.getInstance().getUpdater();
+		if (!updater.shouldSeeChangelog()) return;
+		
+		JOptionPane.showMessageDialog(frame, updater.getChangelog(), 
+			"Changelog - " + updater.getCurrentVersion(), JOptionPane.PLAIN_MESSAGE);
+
+		updater.setChangelogSeen();
+	}
+
+	public void showUpdateCheckFailed() {
+		JOptionPane.showConfirmDialog(frame, "Es konnte nicht überprüft werden,"
+			+ " ob die Version von Ramolos aktuell ist. Einige Funktionen sind"
+			+ " gesperrt und es können Fehler aufteten.",
+			"Update nicht abrufbar", JOptionPane.ERROR_MESSAGE);
+		
 	}
 
 }

@@ -42,11 +42,8 @@ public class ConnectionTab extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 
 		params.setToolTipText(
-			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
-			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es" +
-			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist" +
-			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich " +
-			"'Log-Datei' manuell bearbeitet werden.");
+			"Hier kannst du dich mit unserem Server verbinden, wenn du sowohl\n"
+			+ "Port, als auch deine NutzerID von einem der Veranstalter bekommen hast.");
 		params.setMaximumSize(new Dimension(300, 140));
 		params.setAlignmentX(Component.CENTER_ALIGNMENT);
 		params.setBorder(BorderFactory.createCompoundBorder(
@@ -124,11 +121,7 @@ public class ConnectionTab extends JPanel {
 		JPanel status = new JPanel();
 
 		status.setToolTipText(
-			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
-			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es" +
-			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist" +
-			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich " +
-			"'Log-Datei' manuell bearbeitet werden.");
+			"Ist nicht wirklich wichtig, aber sieht halt cooler aus.");
 		status.setMaximumSize(new Dimension(300, 160));
 		status.setAlignmentX(Component.CENTER_ALIGNMENT);
 		status.setBorder(BorderFactory.createCompoundBorder(
@@ -165,11 +158,8 @@ public class ConnectionTab extends JPanel {
 		GridBagConstraints atc = new GridBagConstraints();
 
 		adminTools.setToolTipText(
-			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
-			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es" +
-			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist" +
-			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich " +
-			"'Log-Datei' manuell bearbeitet werden.");
+			"Hier können Veranstalter von Turnieren und Events\n"
+			+ "diese steuern und Einstellungen vornehmen");
 		adminTools.setMaximumSize(new Dimension(300, 120));
 		adminTools.setAlignmentX(Component.CENTER_ALIGNMENT);
 		adminTools.setBorder(BorderFactory.createCompoundBorder(

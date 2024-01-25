@@ -1,0 +1,8 @@
+• Updated regex for killevent
+• Updated regex for killevent
+• Added Updater
+• Temporary disabled database
+• Added changelog button
+• Moved changelog to resources
+• Added temporary stats table (WIP)
+• Added update failed dialog

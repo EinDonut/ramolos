@@ -12,7 +12,7 @@ public class KillEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {"Du hast (deinen Nemesisgegner \\()?(\\w+)\\)? getötet"};
+		return new String[] {"Du hast (deinen Nemesisgegner \\()?\\W*(\\w+)\\)? getötet.*"};
 	}
 
 	@Override

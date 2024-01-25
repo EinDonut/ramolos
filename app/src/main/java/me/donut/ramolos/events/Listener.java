@@ -67,7 +67,6 @@ public class Listener {
 				event.setRaw(message);
 				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i));
 				lw.addLinesEvaluated(1);
-				System.out.println(Ramolos.getInstance().getInactiveTimer());
 				Ramolos.getInstance().getInactiveTimer().wake();
 				return;
 			}

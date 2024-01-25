@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.Properties;
 import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
@@ -24,6 +23,7 @@ public class Settings {
 	private boolean validPath = false;
 	private int port;
 	private String userID;
+	private String lastVersion;
 
 	private final String CLIENT_AUTO = "settings.autoDetect.client";
 	private final String OS_AUTO = "settings.autoDetect.os";
@@ -33,9 +33,9 @@ public class Settings {
 	private final String LOG_PATH_AUTO = "settings.autoDetect.logPath";
 	private final String PORT = "settings.port";
 	private final String USERID = "settings.userId";
+	private final String LAST_VERSION = "version";
 
 	public Settings() {
-		loadBuildNr();
 		initPreferences();
 	}
 
@@ -47,6 +47,7 @@ public class Settings {
 		autoDetectPath = prefs.getBoolean(LOG_PATH_AUTO, true);
 		port = prefs.getInt(PORT, 4000);
 		userID = prefs.get(USERID, "");
+		lastVersion = prefs.get(LAST_VERSION, "");
 
 		client = Client.values()[prefs.getInt(CLIENT, 0)];
 		osSystem = OsSystem.values()[prefs.getInt(OS, 0)];
@@ -215,6 +216,15 @@ public class Settings {
 		prefs.put(USERID, userID);
 	}
 
+	public String getLastUsedVersion() {
+		return lastVersion;
+	}
+
+	public void setLastUsedVersion(String lastVersion) {
+		this.lastVersion = lastVersion;
+		prefs.put(LAST_VERSION, lastVersion);
+	}
+
 	public enum OsSystem {
 
 		WINDOWS("Windows", "/images/os/windows.png", "&home&", "AppData", "Roaming", ".minecraft"),
@@ -273,17 +283,4 @@ public class Settings {
 			return icon;
 		}
 	}
-
-	private void loadBuildNr() {
-		Properties properties = new Properties();
-		try {
-			properties.load(this.getClass().getResourceAsStream("/app.properties"));
-		} catch (Exception e) {}
-		Ramolos.VERSION = String.join(".", 
-			properties.getProperty("major", "0"),
-			properties.getProperty("minor", "0"),
-			properties.getProperty("build", "0"));
-		Ramolos.BUILD_TIME = properties.getProperty("time");
-	}
-
 }

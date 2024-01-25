@@ -150,7 +150,7 @@ public class AdminWindow extends JFrame {
 
 		JPanel actionsPanel = new JPanel();
 		actionsPanel.setLayout(new GridBagLayout());
-		GridBagConstraints apc = new GridBagConstraints();
+		// GridBagConstraints apc = new GridBagConstraints();
 
 		actionsPanel.setToolTipText(
 			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird" +
@@ -178,8 +178,8 @@ public class AdminWindow extends JFrame {
 		});
 
 
-		JButton btnStartNow = new JButton("Sofort starten");
-		btnSave.setMaximumSize(btnAddUser.getMaximumSize());
+		// JButton btnStartNow = new JButton("Sofort starten");
+		// btnSave.setMaximumSize(btnAddUser.getMaximumSize());
 
 		JButton btnExportRes = new JButton("Ergebnisse exportieren");
 		btnExportRes.setMaximumSize(btnAddUser.getMaximumSize());

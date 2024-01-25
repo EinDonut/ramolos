@@ -178,7 +178,7 @@ public class Connector {
 			String inputLine;
 			try {
 				while ((inputLine = br.readLine()) != null) {
-					System.out.println("> " + inputLine);
+					// System.out.println("> " + inputLine);
 					String[] args = inputLine.split(";");
 					if (args.length <= 1) continue;
 					int packetID = 0;
