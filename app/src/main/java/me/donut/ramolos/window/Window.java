@@ -147,7 +147,7 @@ public class Window extends JFrame {
 		}
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try { 
-				Desktop.getDesktop().browse(new URI(Updater.URL_BASE + Updater.URL_VERSION));
+				Desktop.getDesktop().browse(new URI(Updater.URL_BASE + Updater.URL_DOWNLOAD));
 				Ramolos.getInstance().terminate();
 				dispose();
 				return; 
