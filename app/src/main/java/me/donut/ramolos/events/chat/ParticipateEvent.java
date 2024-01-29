@@ -9,14 +9,19 @@ public class ParticipateEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {
-			"Teams sind auf diesem Server VERBOTEN und werden mit einem Ban bestraft!"
+		return new String[] { // TODO
+			//"Teams sind auf diesem Server VERBOTEN und werden mit einem Ban bestraft!"
 		};
 	}
 
 	@Override
 	public boolean hasPrefix() {
 		return false;
+	}
+
+	@Override
+	public boolean getsSent() {
+		return true;
 	}
 
 	@Override

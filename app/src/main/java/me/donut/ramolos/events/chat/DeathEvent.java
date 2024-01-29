@@ -21,6 +21,11 @@ public class DeathEvent extends ChatEvent {
 	}
 
 	@Override
+	public boolean getsSent() {
+		return true;
+	}
+
+	@Override
 	public String analyze(Matcher match, int key) {
 		self = key == 1;
 		opponent = self ? "" : match.group(0);

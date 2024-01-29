@@ -10,6 +10,7 @@ public abstract class ChatEvent {
 	abstract public String[] getTranslationKeys();
 	abstract public boolean hasPrefix();
 	abstract public String analyze(Matcher match, int key);
+	abstract public boolean getsSent();
 
 	public void setTime(int time) {
 		this.time = time;

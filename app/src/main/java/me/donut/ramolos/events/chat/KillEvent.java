@@ -19,6 +19,11 @@ public class KillEvent extends ChatEvent {
 	public boolean hasPrefix() {
 		return true;
 	}
+	
+	@Override
+	public boolean getsSent() {
+		return true;
+	}
 
 	@Override
 	public String analyze(Matcher match, int key) {

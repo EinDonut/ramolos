@@ -19,6 +19,11 @@ public class JoinEvent extends ChatEvent {
 	}
 
 	@Override
+	public boolean getsSent() {
+		return false;
+	}
+
+	@Override
 	public String analyze(Matcher match, int key) {
 		return Utils.HL_JOIN[0] + match.group(0) + Utils.HL_JOIN[1];
  	}

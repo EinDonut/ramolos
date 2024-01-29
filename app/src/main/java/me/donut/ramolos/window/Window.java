@@ -54,7 +54,6 @@ public class Window extends JFrame {
 			}
 		});
 
-
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -128,6 +127,10 @@ public class Window extends JFrame {
 		return statsTab;
 	}
 
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	public void showSimpleInfoDialog(String message, String title) {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -169,11 +172,10 @@ public class Window extends JFrame {
 	}
 
 	public void showUpdateCheckFailed() {
-		JOptionPane.showConfirmDialog(frame, "Es konnte nicht überprüft werden,"
+		showSimpleInfoDialog("Es konnte nicht überprüft werden,"
 			+ " ob die Version von Ramolos aktuell ist. Einige Funktionen sind"
 			+ " gesperrt und es können Fehler aufteten.",
-			"Update nicht abrufbar", JOptionPane.ERROR_MESSAGE);
+			"Update nicht abrufbar");
 		
 	}
-
 }

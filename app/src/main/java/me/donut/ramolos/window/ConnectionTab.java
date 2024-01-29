@@ -85,6 +85,8 @@ public class ConnectionTab extends JPanel {
 		connect = new JButton("Verbinden");
 		connect.setFont(defaultFont);
 		connect.addActionListener(e -> {
+			if (Ramolos.getInstance().getUpdater().isFeatureLocked()) return;
+
 			if (connect.getText().equals("Verbinden"))
 				Ramolos.getInstance().getConnector().connect();
 			else

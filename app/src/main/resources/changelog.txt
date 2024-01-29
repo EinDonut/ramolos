@@ -6,3 +6,5 @@
 • Moved changelog to resources
 • Added temporary stats table (WIP)
 • Added update failed dialog
+• Outdated clients now block features
+• Added message sent icon

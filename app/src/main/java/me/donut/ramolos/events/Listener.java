@@ -65,13 +65,14 @@ public class Listener {
 				if (!matcher.find()) continue;
 				event.setTime(time);
 				event.setRaw(message);
-				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i));
+				boolean sent = Ramolos.getInstance().getConnector().isConnected() && event.getsSent();
+				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i), sent);
 				lw.addLinesEvaluated(1);
 				Ramolos.getInstance().getInactiveTimer().wake();
 				return;
 			}
 		}
-		Ramolos.getInstance().getWindow().getChatTab().appendLine(message);
+		Ramolos.getInstance().getWindow().getChatTab().appendLine(message, false);
 	}
 
 	private String clearText(String input) {

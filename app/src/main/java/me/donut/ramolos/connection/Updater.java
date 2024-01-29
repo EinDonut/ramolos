@@ -106,4 +106,13 @@ public class Updater {
 			properties.getProperty("build", "0"));
 		build_time = properties.getProperty("time");
 	}
+
+	public boolean isFeatureLocked() {
+		if (isUpToDate()) return false;
+		Ramolos.getInstance().getWindow().showSimpleInfoDialog( 
+			"Diese Funktion ist gesperrt, da dein Client veraltet ist. Starte "
+			+ "das Programm neu und installiere die neuste Version um "
+			+ "fortzufahren", "Funktion gesperrt");
+		return true;
+	}
 }

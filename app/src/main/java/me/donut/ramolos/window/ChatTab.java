@@ -78,9 +78,8 @@ public class ChatTab extends JPanel {
 		add(infoTable);
 	}
 
-	public void appendLine(String text) {
-		// log.add("<p>🔁 " + text + "</p>");
-		log.add("<p>" + text + "</p>");
+	public void appendLine(String text, boolean sent) {
+		log.add("<p>" + (sent ? "🔁 " : "") + text + "</p>");
 		while(log.size() > LOG_SIZE) log.remove(0);
 		editorPane.setText("<html><body>" + String.join("", log) + "</body></html>");
 	}

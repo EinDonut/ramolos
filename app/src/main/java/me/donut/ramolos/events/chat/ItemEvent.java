@@ -25,6 +25,11 @@ public class ItemEvent extends ChatEvent {
 	public boolean hasPrefix() {
 		return true;
 	}
+	
+	@Override
+	public boolean getsSent() {
+		return false;
+	}
 
 	@Override
 	public String analyze(Matcher match, int key) {
