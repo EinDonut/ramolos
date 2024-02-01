@@ -11,6 +11,7 @@ import me.donut.ramolos.events.chat.DeathEvent;
 import me.donut.ramolos.events.chat.ItemEvent;
 import me.donut.ramolos.events.chat.JoinEvent;
 import me.donut.ramolos.events.chat.KillEvent;
+import me.donut.ramolos.events.chat.ParticipateEvent;
 
 public class Listener {
 	
@@ -21,6 +22,7 @@ public class Listener {
 		registerChatEvent(new DeathEvent());
 		registerChatEvent(new ItemEvent());
 		registerChatEvent(new JoinEvent());
+		registerChatEvent(new ParticipateEvent());
 	}
 
 	public void registerChatEvent(ChatEvent event) {

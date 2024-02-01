@@ -8,10 +8,11 @@ import javax.swing.ImageIcon;
 
 public class Utils {
 
-	public static final String[] HL_NAME = new String[]{ "<b class=\"hl_name\">", "</b>"};
-	public static final String[] HL_NEMESIS = new String[]{ "<b class=\"hl_nemesis\">", "</b>"};
-	public static final String[] HL_ITEM = new String[]{ "<b class=\"hl_item\">", "</b>"};
-	public static final String[] HL_JOIN = new String[]{ "<b class=\"hl_join\">", "</b>"};
+	public static final String[] HL_NAME = new String[]{ "<b class=\"hl_name\">", "</b>" };
+	public static final String[] HL_NEMESIS = new String[]{ "<b class=\"hl_nemesis\">", "</b>" };
+	public static final String[] HL_ITEM = new String[]{ "<b class=\"hl_item\">", "</b>" };
+	public static final String[] HL_JOIN = new String[]{ "<b class=\"hl_join\">", "</b>" };
+	public static final String[] HL_PARTICIPATE = new String[]{ "<b class=\"hl_participate\">", "</b>" };
 
 	public static final String COLOR_PLACEHOLDER = "<html><font color='%s'>%s</font></html>";
 	public static final String COLOR_RED = "#bd3c5f";

@@ -20,6 +20,7 @@ public class Updater {
 	private String latest_version = "";
 	private String build_time = "";
 	private String changelog = ""; 
+	private boolean dev = false;
 	
 	public Updater() {
 		loadBuildNr();
@@ -84,6 +85,7 @@ public class Updater {
 	}
 
 	public boolean isUpToDate() {
+		if (isDevMode()) return true;
 		return version.equals(latest_version);
 	}
 
@@ -105,14 +107,20 @@ public class Updater {
 			properties.getProperty("minor", "0"),
 			properties.getProperty("build", "0"));
 		build_time = properties.getProperty("time");
+		dev = Boolean.parseBoolean(properties.getProperty("dev"));
 	}
 
 	public boolean isFeatureLocked() {
 		if (isUpToDate()) return false;
+		if (isDevMode()) return false;
 		Ramolos.getInstance().getWindow().showSimpleInfoDialog( 
 			"Diese Funktion ist gesperrt, da dein Client veraltet ist. Starte "
 			+ "das Programm neu und installiere die neuste Version um "
 			+ "fortzufahren", "Funktion gesperrt");
 		return true;
+	}
+
+	public boolean isDevMode() {
+		return dev;
 	}
 }

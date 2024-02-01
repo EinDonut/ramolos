@@ -46,6 +46,7 @@ public class ChatTab extends JPanel {
 		styleSheet.addRule("b.hl_nemesis {color: #4E576A}");
 		styleSheet.addRule("b.hl_item {color: #692746}");
 		styleSheet.addRule("b.hl_join {color: #89ca78}");
+		styleSheet.addRule("b.hl_participate {color: #d9a343}");
 
 		editorPane.setEditorKit(kit);
 		editorPane.setDocument(doc);
@@ -81,6 +82,7 @@ public class ChatTab extends JPanel {
 	public void appendLine(String text, boolean sent) {
 		log.add("<p>" + (sent ? "🔁 " : "") + text + "</p>");
 		while(log.size() > LOG_SIZE) log.remove(0);
+		if (sent) updateLinesTransmitted(1);
 		editorPane.setText("<html><body>" + String.join("", log) + "</body></html>");
 	}
 

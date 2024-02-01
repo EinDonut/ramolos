@@ -39,7 +39,8 @@ public class Window extends JFrame {
 		IntelliJTheme.setup(Window.class.getResourceAsStream(THEME_PATH));
 		setupFont();
 
-		setTitle(TITLE + " - " + Ramolos.getInstance().getUpdater().getCurrentVersion());
+		Updater updater = Ramolos.getInstance().getUpdater();
+		setTitle(TITLE + " - " + (updater.isDevMode() ? "[DEV]" : updater.getCurrentVersion()));
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

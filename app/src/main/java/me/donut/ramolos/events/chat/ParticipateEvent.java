@@ -7,10 +7,12 @@ import me.donut.ramolos.connection.TournmanetPacket;
 
 public class ParticipateEvent extends ChatEvent {
 
+	private String sender;
+
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] { // TODO
-			//"Teams sind auf diesem Server VERBOTEN und werden mit einem Ban bestraft!"
+		return new String[] {
+			"\\W*(\\w+): (go!)\\W*"
 		};
 	}
 
@@ -26,8 +28,17 @@ public class ParticipateEvent extends ChatEvent {
 
 	@Override
 	public String analyze(Matcher match, int key) {
-		new TournmanetPacket("participate");
+		sender = match.group(1);
+		new TournmanetPacket("participate", sender);
 
-		return Utils.HL_JOIN[0] + match.group(0) + Utils.HL_JOIN[1];
+		int[] indice = new int[] {
+			match.start(2), match.end(2)
+		};
+
+		String[] insertions = new String[] {
+			Utils.HL_PARTICIPATE[0], Utils.HL_PARTICIPATE[1]
+		};
+
+		return Utils.insertText(getRaw(), indice, insertions);
  	}
 }

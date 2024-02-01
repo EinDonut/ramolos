@@ -19,8 +19,8 @@ public class TournmanetPacket extends Packet {
 		Ramolos.getInstance().getWindow().getConnectionTab().updateServerMessage(message, color);
 	}
 
-	public TournmanetPacket(String action) {
+	public TournmanetPacket(String action, String data) {
 		// start stop startnow participate
-		send(new String[] { action });
+		send(new String[] { action, data });
 	}
 }

@@ -188,8 +188,9 @@ public class Settings {
 			String path = "";
 
 			for (String pathPart : c.getPath()) {
-				path += pathPart.equals("&home&") ? System.getProperty("user.home") : "";	
-				path += pathPart.equals("&mcdir&") ? mcdir : pathPart;
+				path += pathPart.equals("&home&") ? System.getProperty("user.home") : "";
+				if (!pathPart.equals("&home&"))
+					path += pathPart.equals("&home&") && pathPart.equals("&mcdir&") ? mcdir : pathPart;
 				path += pathPart.endsWith(".log") ? "" : File.separator;
 			}
 			result[i] = path;

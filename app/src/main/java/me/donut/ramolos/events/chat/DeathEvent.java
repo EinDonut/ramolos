@@ -12,7 +12,7 @@ public class DeathEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] { "Du wurdest von \\W*(\\w+) getötet.*", "Du bist (gestorben)" };
+		return new String[] { "Du wurdest von \\W*(\\w+) get.?tet.*", "Du bist (gestorben)" };
 	}
 
 	@Override

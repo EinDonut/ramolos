@@ -176,14 +176,14 @@ public class ConnectionTab extends JPanel {
 		btnStart.setFont(defaultFont);
 		btnStart.addActionListener(e -> {
 			if (!Ramolos.getInstance().getConnector().isAdminMode()) return;
-			new TournmanetPacket("start");
+			new TournmanetPacket("start", "");
 		});
 
 		JButton btnStop = new JButton("Stopp");
 		btnStop.setFont(defaultFont);
 		btnStop.addActionListener(e -> {
 			if (!Ramolos.getInstance().getConnector().isAdminMode()) return;
-			new TournmanetPacket("stop");
+			new TournmanetPacket("stop", "");
 		});
 
 		JButton btnAdvanced = new JButton("Erweitert");
