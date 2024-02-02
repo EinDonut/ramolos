@@ -1,4 +1,2 @@
-• Fixed ParticipateEvent
-• Updated ChatTab Sent icon & stats
-• Fixed incorrect path for Lunar Client
-• Added AdminControlPacket
+• Fixed ChatStatistic "Lines transmitted"
+• Added Soundeffect on Tournament end

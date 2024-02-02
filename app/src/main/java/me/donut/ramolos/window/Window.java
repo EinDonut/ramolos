@@ -17,6 +17,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 
 import me.donut.ramolos.Ramolos;
+import me.donut.ramolos.Utils;
 import me.donut.ramolos.connection.Updater;
 
 public class Window extends JFrame {

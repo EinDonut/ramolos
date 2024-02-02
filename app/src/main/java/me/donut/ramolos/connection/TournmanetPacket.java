@@ -1,6 +1,7 @@
 package me.donut.ramolos.connection;
 
 import me.donut.ramolos.Ramolos;
+import me.donut.ramolos.Utils;
 
 public class TournmanetPacket extends Packet {
 
@@ -14,6 +15,9 @@ public class TournmanetPacket extends Packet {
 		boolean running = Boolean.valueOf(args[1]);
 		String message = args[2];
 		String color = args.length == 4 ? args[3] : "";
+
+		if (Ramolos.getInstance().getSetup().isRunning() && !running)
+			Utils.playSound("doggo");
 
 		Ramolos.getInstance().getSetup().setRunning(running);
 		Ramolos.getInstance().getWindow().getConnectionTab().updateServerMessage(message, color);

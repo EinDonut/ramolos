@@ -2,8 +2,13 @@ package me.donut.ramolos;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 public class Utils {
@@ -51,5 +56,19 @@ public class Utils {
 		if (last != input.length() - 1) parts.add(input.substring(last));
 
 		return String.join("", parts);
+	}
+
+	public static void playSound(String file) {
+		URL url;
+		try {
+			url = Utils.class.getResource("/sounds/" + file + ".wav").toURI().toURL();
+			System.out.println(url.toString());
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);  
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

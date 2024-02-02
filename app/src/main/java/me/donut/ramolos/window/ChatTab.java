@@ -11,6 +11,7 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Utils;
 
 
@@ -82,7 +83,7 @@ public class ChatTab extends JPanel {
 	public void appendLine(String text, boolean sent) {
 		log.add("<p>" + (sent ? "🔁 " : "") + text + "</p>");
 		while(log.size() > LOG_SIZE) log.remove(0);
-		if (sent) updateLinesTransmitted(1);
+		if (sent) Ramolos.getInstance().getLogWatcher().addLineTransmitted(1);
 		editorPane.setText("<html><body>" + String.join("", log) + "</body></html>");
 	}
 
