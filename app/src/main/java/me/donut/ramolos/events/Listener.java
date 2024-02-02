@@ -40,6 +40,7 @@ public class Listener {
 		int time = 0;
 		
 		String[] split = text.split(" ");
+		if (split.length < 5) return;
 		if (split[0].length() != 10) return;
 		if (!split[2].equals("thread/INFO]:")) return;
 		if (!split[3].equals("[CHAT]")) return;

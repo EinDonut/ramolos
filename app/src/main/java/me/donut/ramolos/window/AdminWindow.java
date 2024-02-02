@@ -22,6 +22,7 @@ import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Setup;
 import me.donut.ramolos.Utils;
 import me.donut.ramolos.Setup.Player;
+import me.donut.ramolos.connection.AdminControlPacket;
 
 public class AdminWindow extends JFrame {
 
@@ -164,7 +165,7 @@ public class AdminWindow extends JFrame {
 			BorderFactory.createLineBorder(borderColor),
 			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		actionsPanel.setBorder(BorderFactory.createTitledBorder(
-			actionsPanel.getBorder(), "Spieler", 
+			actionsPanel.getBorder(), "Aktionen", 
 			TitledBorder.DEFAULT_JUSTIFICATION, 
 			TitledBorder.DEFAULT_POSITION, panelTitleFont));
 
@@ -178,14 +179,26 @@ public class AdminWindow extends JFrame {
 		});
 
 
-		// JButton btnStartNow = new JButton("Sofort starten");
-		// btnSave.setMaximumSize(btnAddUser.getMaximumSize());
+		JButton btnStartNow = new JButton("Sofort starten");
+		btnStartNow.setMaximumSize(btnAddUser.getMaximumSize());
+		btnStartNow.addActionListener(e -> {
+			new AdminControlPacket("startnow");
+		});
+		actionsPanel.add(btnStartNow);
 
 		JButton btnExportRes = new JButton("Ergebnisse exportieren");
 		btnExportRes.setMaximumSize(btnAddUser.getMaximumSize());
+		btnExportRes.addActionListener(e -> {
+			new AdminControlPacket("export");
+		});
+		actionsPanel.add(btnExportRes);
 
 		JButton btnExportLog = new JButton("Log exportieren");
 		btnExportLog.setMaximumSize(btnAddUser.getMaximumSize());
+		btnExportLog.addActionListener(e -> {
+			new AdminControlPacket("exportLog");
+		});
+		actionsPanel.add(btnExportLog);
 
 		// c.insets = new Insets(0, 10, 0, 10);
 		// apc.fill = GridBagConstraints.HORIZONTAL;
@@ -207,6 +220,8 @@ public class AdminWindow extends JFrame {
 		base.add(settingsPanel);
 		base.add(Box.createRigidArea(new Dimension(0, 10)));
 		base.add(playersPanel);
+		base.add(Box.createRigidArea(new Dimension(0, 10)));
+		base.add(actionsPanel);
 
 		Setup setup = Ramolos.getInstance().getSetup();
 

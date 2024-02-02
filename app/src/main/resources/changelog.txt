@@ -1,3 +1,4 @@
 • Fixed ParticipateEvent
 • Updated ChatTab Sent icon & stats
 • Fixed incorrect path for Lunar Client
+• Added AdminControlPacket

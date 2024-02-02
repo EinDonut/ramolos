@@ -194,6 +194,10 @@ public class Connector {
 							break;
 						case 5:
 							new SetupPacket(args);
+							break;
+						case 7:
+							new AdminControlPacket(args);
+							break;
 						default:
 							continue;
 					}
