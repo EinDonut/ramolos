@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,6 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Settings;
+import me.donut.ramolos.Translator.Language;
 import me.donut.ramolos.Utils;
 import me.donut.ramolos.Settings.Client;
 import me.donut.ramolos.connection.Updater;
@@ -20,15 +23,20 @@ public class SettingsTab extends JPanel {
 	private Settings settings = Ramolos.getInstance().getSettings();
 	private JComboBox<Integer> osCombo;
 	private JComboBox<Integer> clientCombo;
+	private JComboBox<String> notifSoundCombo;
+	private JComboBox<String> languageCombo;
 	private JTextArea pathText;
-	private JLabel pathHint;
+	// private JLabel pathHint;
 	private JButton pathButton;
 	private JCheckBox osAuto;
 	private JCheckBox clientAuto;
+	private JCheckBox languageAuto;
 
 	public SettingsTab() {
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		JPanel base = new JPanel();
+		base.setSize(new Dimension(300, 900));
+		base.setLayout(new BoxLayout(base, BoxLayout.Y_AXIS));
 		Font panelTitleFont = new Font(Window.getCustomFont().getName(), Font.PLAIN, 18);
 		Font hintFont = new Font(Window.getCustomFont().getName(), Font.PLAIN, 16);
 		Color borderColor = Color.decode("#505254");
@@ -90,6 +98,54 @@ public class SettingsTab extends JPanel {
 		client.add(clientCombo);
 		client.add(clientHint);
 
+		/******* LANGUAGE *******/
+		JPanel language = new JPanel();
+		language.setToolTipText(
+			"Wähle den verwendeten Client aus. Mit der Schaltfläche 'Auto' wird\n" +
+			"versucht den aktuellen Client automatisch zu erkennen, dazu ist es\n" +
+			"gegebenfalls nötig, das Häkchen zu entfernen und neu zu setzen. Ist\n" +
+			"der verwendete Client nicht aufgeführt, muss der Pfad im Bereich\n" +
+			"'Log-Datei' manuell bearbeitet werden.");
+		language.setMaximumSize(new Dimension(300, 110));
+		language.setAlignmentX(Component.CENTER_ALIGNMENT);
+		language.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(borderColor),
+			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		language.setBorder(BorderFactory.createTitledBorder(
+			language.getBorder(), "Sprache*", 
+			TitledBorder.DEFAULT_JUSTIFICATION, 
+			TitledBorder.DEFAULT_POSITION, panelTitleFont));
+
+		String[] languages = new String[Language.values().length];
+		for (int i = 0; i < languages.length; i++) {
+			languages[i] = Utils.capitalizeFirst(Language.values()[i].name());
+		}
+		languageAuto = new JCheckBox("Auto");
+		languageCombo = new JComboBox<>(languages);
+		languageAuto.setSelected(settings.isAutoDetectLanguage());
+		languageAuto.setFont(Window.getCustomFont());
+		languageAuto.addActionListener(e -> {
+			settings.setLanguageAutoDetect(languageAuto.isSelected());
+			languageCombo.setEnabled(!settings.isAutoDetectLanguage());
+		});
+		
+		int currentIndex = Utils.getIndexByValue(Language.class, settings.getLanguage());
+		languageCombo.setEnabled(!settings.isAutoDetectLanguage());
+		languageCombo.setPreferredSize(new Dimension(150, 40));
+		languageCombo.setFont(Window.getCustomFont());
+		languageCombo.setSelectedIndex(currentIndex);
+		languageCombo.addActionListener(e -> {
+			settings.setLanguage(Language.values()[languageCombo.getSelectedIndex()]);
+		});
+
+		JLabel languageHint = new JLabel("*Sprache auf GommeHD.net");
+		languageHint.setFont(hintFont);
+		languageHint.setForeground(Color.decode("#BBBBBB"));
+
+		language.add(languageAuto);
+		language.add(languageCombo);
+		language.add(languageHint);
+
 		/******* OS *******/
 		JPanel os = new JPanel();
 		os.setToolTipText(
@@ -150,7 +206,7 @@ public class SettingsTab extends JPanel {
 			"werden und der Pfad manuell bearbeitet werden.");
 		path.setFont(panelTitleFont);
 		path.setAlignmentX(Component.CENTER_ALIGNMENT);
-		path.setMaximumSize(new Dimension(300, 210));
+		path.setMaximumSize(new Dimension(300, 170));
 		path.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createLineBorder(borderColor),
 			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -188,16 +244,73 @@ public class SettingsTab extends JPanel {
 		pathText.setEditable(false);
 		pathText.setFont(panelTitleFont);
 
-		pathHint = new JLabel("", SwingConstants.CENTER);
-		pathHint.setFont(panelTitleFont);
-		pathHint.setPreferredSize(new Dimension(150, 40));
+		// pathHint = new JLabel("", SwingConstants.CENTER);
+		// pathHint.setFont(panelTitleFont);
+		// pathHint.setPreferredSize(new Dimension(150, 40));
 		updatePathDisplay();
 		
 		path.add(pathAuto);
 		path.add(pathButton);
 		path.add(pathText);
-		path.add(pathHint);
+		// path.add(pathHint);
 
+		/******* NOTIFICATION *******/
+		JPanel notification = new JPanel();
+		notification.setFont(panelTitleFont);
+		notification.setAlignmentX(Component.CENTER_ALIGNMENT);
+		notification.setMaximumSize(new Dimension(300, 170));
+		notification.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(borderColor),
+			BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		notification.setBorder(BorderFactory.createTitledBorder(
+			path.getBorder(), "Benachrichtigungen", 
+			TitledBorder.DEFAULT_JUSTIFICATION, 
+			TitledBorder.DEFAULT_POSITION, panelTitleFont));
+
+		String[] sounds = {"Sound 1", "Sound 2", "Sound 3", "Sound 4", "Sound 5"};
+		notifSoundCombo = new JComboBox<>(sounds);
+		notifSoundCombo.setSelectedIndex(settings.getNotificationSound());
+		notifSoundCombo.setPreferredSize(new Dimension(150, 40));
+		notifSoundCombo.setFont(Window.getCustomFont());
+		notifSoundCombo.addActionListener(e -> {
+			settings.setNotificationSound(notifSoundCombo.getSelectedIndex());
+			Utils.playNotificationSound();
+		});
+
+		JSlider notifSoundVolume = new JSlider();
+		notifSoundVolume.setMinimum(0);
+		notifSoundVolume.setMaximum(100);
+		notifSoundVolume.setValue(settings.getNotificationVolume());
+		notifSoundVolume.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				settings.setNotificationSoundVolume(notifSoundVolume.getValue());
+				Utils.playNotificationSound();
+			}			
+		});
+
+		JCheckBox sendToasts = new JCheckBox("Toast Benachrichtigungen");
+		sendToasts.setSelected(settings.useToastNotification());
+		sendToasts.setFont(Window.getCustomFont());
+		sendToasts.addActionListener(e -> {
+			settings.setUseToastNotification(sendToasts.isSelected());
+		});
+
+		notification.add(notifSoundCombo);
+		notification.add(notifSoundVolume);
+		notification.add(sendToasts);
+
+		/* FOOTER */
 		JPanel footer = new JPanel();
 		footer.setAlignmentX(Component.CENTER_ALIGNMENT);
 		footer.setMaximumSize(new Dimension(300, 80));
@@ -229,15 +342,27 @@ public class SettingsTab extends JPanel {
 		footer.add(sources);
 		footer.add(changelog);
 
-		add(Box.createRigidArea(new Dimension(0, 10)));
-		add(client);
-		add(Box.createRigidArea(new Dimension(0 , 10)));
-		add(os);
-		add(Box.createRigidArea(new Dimension(0 , 10)));
-		add(path);
-		add(Box.createRigidArea(new Dimension(0 , 30)));
-		add(footer);
+		base.add(Box.createRigidArea(new Dimension(0, 10)));
+		base.add(client);
+		base.add(Box.createRigidArea(new Dimension(0, 10)));
+		base.add(language);
+		base.add(Box.createRigidArea(new Dimension(0 , 10)));
+		base.add(os);
+		base.add(Box.createRigidArea(new Dimension(0 , 10)));
+		base.add(path);
+		base.add(Box.createRigidArea(new Dimension(0 , 10)));
+		base.add(notification);
+		base.add(Box.createRigidArea(new Dimension(0 , 30)));
+		base.add(footer);
 
+		base.setPreferredSize(new Dimension(416, 700));
+		JScrollPane listScroller = new JScrollPane(base, 
+			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		listScroller.setBorder(null);
+		listScroller.setPreferredSize(new Dimension(398, 466));
+		listScroller.getVerticalScrollBar().setUnitIncrement(16);
+		add(listScroller);
 	}
 
 	public void updateClientDisplay() {
@@ -256,13 +381,18 @@ public class SettingsTab extends JPanel {
 
 	public void updatePathDisplay() {
 		pathText.setText(settings.getPath());
-		pathHint.setText(settings.isValidPath() ? "Datei gefunden" : "Datei nicht gefunden");
-		pathHint.setForeground(Color.decode(settings.isValidPath() ? Utils.COLOR_GREEN : Utils.COLOR_RED));
+		// pathHint.setText(settings.isValidPath() ? "Datei gefunden" : "Datei nicht gefunden");
+		pathText.setForeground(Color.decode(settings.isValidPath() ? Utils.COLOR_GREEN : Utils.COLOR_RED));
 
 		pathButton.setEnabled(!settings.isAutoDetectPath());
 		osCombo.setEnabled(!settings.isAutoDetectSystem() && settings.isAutoDetectPath());
 		clientCombo.setEnabled(!settings.isAutoDetectClient() && settings.isAutoDetectPath());
 		osAuto.setEnabled(settings.isAutoDetectPath());
 		clientAuto.setEnabled(settings.isAutoDetectPath());
+	}
+
+	public void updateLanguageDisplay(Language lang) {
+		int index = Utils.getIndexByValue(Language.class, lang);
+		languageCombo.setSelectedIndex(index);
 	}
 }

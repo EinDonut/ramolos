@@ -1,15 +1,19 @@
 package me.donut.ramolos;
 
-import java.util.ArrayList;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.ImageIcon;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class Utils {
 
@@ -38,6 +42,32 @@ public class Utils {
 		return -1;
 	}
 
+	public static ArrayList<String> readRessource(String path) {
+		InputStream inputstream = Utils.class.getResourceAsStream(path);
+		ArrayList<String> result = new ArrayList<>();
+
+		if (inputstream == null) return result;
+		try {
+			InputStreamReader isr = new InputStreamReader(inputstream, Charset.forName("UTF-8"));
+			BufferedReader br = new BufferedReader(isr);
+			String s;
+			while ((s = br.readLine()) != null)	result.add(s);
+			br.close();
+			isr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	public static String capitalizeFirst(String input) {
+		if (input.length() == 0) return "";
+		String[] split = input.toLowerCase().split("");
+		split[0] = split[0].toUpperCase();
+		return String.join("", split);
+	}
+
 	public static boolean fileExists(String path) {
 		File f = new File(path);
 		return f.exists();
@@ -58,14 +88,20 @@ public class Utils {
 		return String.join("", parts);
 	}
 
-	public static void playSound(String file) {
+	public static void playNotificationSound() {
 		URL url;
+		int sound = Ramolos.getInstance().getSettings().getNotificationSound();
+		float volume = Ramolos.getInstance().getSettings().getNotificationVolume() / 100.0f;
+		if (volume < 0.0 || volume > 1.0) return;
 		try {
-			url = Utils.class.getResource("/sounds/" + file + ".wav").toURI().toURL();
-			System.out.println(url.toString());
+			url = Utils.class.getResource("/sounds/notif" + sound + ".wav").toURI().toURL();
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);  
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioIn);
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
+    		float range = gainControl.getMaximum() - gainControl.getMinimum();
+			float gain = (range * volume) + gainControl.getMinimum();
+			gainControl.setValue(gain);
 			clip.start();
 		} catch (Exception ex) {
 			ex.printStackTrace();

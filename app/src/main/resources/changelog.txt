@@ -1,2 +1,6 @@
 • Fixed ChatStatistic "Lines transmitted"
-• Added Soundeffect on Tournament end
+• Added 5 Soundeffects
+• Added Selection/Volume control settings for Sounds
+• Added SoundPacket
+• Added language Support (de,en,at,es,fr)
+• Added Toast notifier

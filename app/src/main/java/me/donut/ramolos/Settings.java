@@ -1,5 +1,6 @@
 package me.donut.ramolos;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +11,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 
+import me.donut.ramolos.Translator.Language;
 
 public class Settings {
 	
@@ -17,13 +19,19 @@ public class Settings {
 	private boolean autoDetectOS;
 	private boolean autoDetectClient;
 	private boolean autoDetectPath;
+	private boolean autoDetectLanguage;
 	private Client client;
 	private OsSystem osSystem;
 	private String logPath;
 	private boolean validPath = false;
 	private int port;
+	private Language language;
 	private String userID;
+	private int notifSound = 0;
+	private int notifSoundVolume = 50;
 	private String lastVersion;
+	private Point windowLocation;
+	private boolean useToast;
 
 	private final String CLIENT_AUTO = "settings.autoDetect.client";
 	private final String OS_AUTO = "settings.autoDetect.os";
@@ -33,7 +41,13 @@ public class Settings {
 	private final String LOG_PATH_AUTO = "settings.autoDetect.logPath";
 	private final String PORT = "settings.port";
 	private final String USERID = "settings.userId";
+	private final String NOTIF_SOUND = "settings.notifSound";
+	private final String NOTIF_SOUND_VOLUME = "settings.notifSoundVolume";
 	private final String LAST_VERSION = "version";
+	private final String LANGUAGE_AUTO = "settings.autoDetect.language";
+	private final String LANGUAGE = "settings.language";
+	private final String WINDOW_LOCATION = "settings.windowPosition";
+	private final String TOAST = "settings.toast";
 
 	public Settings() {
 		initPreferences();
@@ -47,7 +61,15 @@ public class Settings {
 		autoDetectPath = prefs.getBoolean(LOG_PATH_AUTO, true);
 		port = prefs.getInt(PORT, 4000);
 		userID = prefs.get(USERID, "");
+		notifSoundVolume = prefs.getInt(NOTIF_SOUND_VOLUME, 50);
+		notifSound = prefs.getInt(NOTIF_SOUND, 0);
 		lastVersion = prefs.get(LAST_VERSION, "");
+		autoDetectLanguage = prefs.getBoolean(LANGUAGE_AUTO, true);
+		language = Language.valueOf(prefs.get(LANGUAGE, Language.GERMAN.name()));
+		useToast = prefs.getBoolean(TOAST, true);
+		windowLocation = new Point(
+			prefs.getInt(WINDOW_LOCATION + ".x", -9999), 
+			prefs.getInt(WINDOW_LOCATION + ".y", -9999));
 
 		client = Client.values()[prefs.getInt(CLIENT, 0)];
 		osSystem = OsSystem.values()[prefs.getInt(OS, 0)];
@@ -145,6 +167,50 @@ public class Settings {
 		else changePath(logPath);
 	}
 
+	public Point getWindowLocation() {
+		if (windowLocation.equals(new Point(-9999, -9999))) return null;
+		return windowLocation;
+	}
+
+	public void setWindowLocation(Point location) {
+		windowLocation = location;
+		prefs.putInt(WINDOW_LOCATION + ".x", location.x);
+		prefs.putInt(WINDOW_LOCATION + ".y", location.y);
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language lang) {
+		if (lang != language) {
+			Ramolos.getInstance().getTranslator().changeLanguage(lang);
+			Ramolos.getInstance().getWindow().getSettingsTab().updateLanguageDisplay(lang);
+		}
+		language = lang;
+		prefs.put(LANGUAGE, lang.name());
+	}
+
+	public boolean isAutoDetectLanguage() {
+		return autoDetectLanguage;
+	}
+
+	public void setLanguageAutoDetect(boolean value) {
+		autoDetectLanguage = value;
+		prefs.putBoolean(LANGUAGE_AUTO, value);
+	}
+
+	public boolean useToastNotification() {
+		return useToast;
+	}
+
+	public void setUseToastNotification(boolean value) {
+		useToast = value;
+		prefs.putBoolean(TOAST, value);
+		if (value) Ramolos.getInstance().getToastNotifier().addTrayIcon();
+		else Ramolos.getInstance().getToastNotifier().removeTrayIcon();
+	}
+
 	public Client getClient() {
 		return client;
 	}
@@ -215,6 +281,24 @@ public class Settings {
 	public void setUserID(String userID) {
 		this.userID = userID;
 		prefs.put(USERID, userID);
+	}
+
+	public int getNotificationVolume() {
+		return notifSoundVolume;
+	}
+
+	public void setNotificationSoundVolume(int volume) {
+		this.notifSoundVolume= volume;
+		prefs.putInt(NOTIF_SOUND_VOLUME, volume);
+	}
+
+	public int getNotificationSound() {
+		return notifSound;
+	}
+
+	public void setNotificationSound(int sound) {
+		this.notifSound = sound;
+		prefs.putInt(NOTIF_SOUND, sound);
 	}
 
 	public String getLastUsedVersion() {

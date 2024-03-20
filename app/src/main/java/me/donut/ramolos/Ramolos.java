@@ -15,6 +15,8 @@ public class Ramolos {
 	private Listener listener;
 	private InactiveTimer afkTimer;
 	private Connector connector;
+	private Translator translator;
+	private ToastNotifier toastNotifier;
 	// private DatabaseConnection dbConnection;
 	private Setup setup;
 	private Updater updater;
@@ -28,12 +30,16 @@ public class Ramolos {
 		listener = new Listener();
 		afkTimer = new InactiveTimer();
 		connector = new Connector();
+		translator = new Translator();
+		toastNotifier = new ToastNotifier();
 		// dbConnection = new DatabaseConnection();
 		setup = new Setup();
 
 		afkTimer.start();
 		window.showOutdatedClientMessage();
 		window.showChangelog();
+
+		toastNotifier.sendNotification("JoinMe", "DerDonut läd zum RageModeFFA Spielen ein!");
 	}
 
 	public static void main(String[] args) {
@@ -47,6 +53,8 @@ public class Ramolos {
 	public void terminate() {
 		logWatcher.terminate();
 		connector.disconnect();
+		settings.setWindowLocation(window.getLocation());
+		toastNotifier.removeTrayIcon();
 		// dbConnection.disconnect();
 	}
 
@@ -80,5 +88,13 @@ public class Ramolos {
 
 	public Updater getUpdater() {
 		return updater;
+	}
+
+	public Translator getTranslator() {
+		return translator;
+	}
+
+	public ToastNotifier getToastNotifier() {
+		return toastNotifier;
 	}
 }

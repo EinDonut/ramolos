@@ -5,19 +5,28 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URI;
-import java.awt.event.WindowAdapter;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 
 import me.donut.ramolos.Ramolos;
-import me.donut.ramolos.Utils;
+import me.donut.ramolos.Settings;
 import me.donut.ramolos.connection.Updater;
 
 public class Window extends JFrame {
@@ -44,9 +53,15 @@ public class Window extends JFrame {
 		setTitle(TITLE + " - " + (updater.isDevMode() ? "[DEV]" : updater.getCurrentVersion()));
 		setLayout(new BorderLayout());
 		setSize(WINDOW_SIZE);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
+		Image logoImg = Toolkit.getDefaultToolkit()
+			.createImage(getClass().getResource("/images/ramolos_icon.png"));
+		setIconImage(logoImg);
+
+		Settings settings = Ramolos.getInstance().getSettings();
+		if (settings.getWindowLocation() == null) setLocationRelativeTo(null);
+		else setLocation(settings.getWindowLocation());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -62,7 +77,7 @@ public class Window extends JFrame {
 				if (!Ramolos.getInstance().getConnector().isConnected()) {
 					Ramolos.getInstance().terminate();
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					e.getWindow().dispose();;
+					e.getWindow().dispose();
 					return;
 				}
 

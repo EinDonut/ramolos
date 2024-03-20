@@ -11,13 +11,13 @@ public class ItemEvent extends ChatEvent {
 	@Override
 	public String[] getTranslationKeys() {
 		return new String[] {
-			"Du hast eine (Landmine) erhalten", 
-			"Deine (Geschwindigkeit) wurde für 20 Sekunden stark erhöht",
-			"Eine (Hundestaffel) unterstützt dich nun im Kampf",
-			"Dein RageBow schießt 12 Sekunden lang im (Sturmfeuer)",
-			"Du hast eine (Eisenrüstung) erhalten",
-			"Du kannst 18 Sekunden lang (fliegen)",
-			"Du hast eine (Bombe) verheerenden Ausmaßes gezündet"
+			"item-mine", 
+			"item-speed",
+			"item-dogs",
+			"item-quickfire",
+			"item-armor",
+			"item-angel",
+			"item-nuke"
 		};
 	}
 

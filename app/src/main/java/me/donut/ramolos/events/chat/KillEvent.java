@@ -2,6 +2,7 @@ package me.donut.ramolos.events.chat;
 
 import java.util.regex.Matcher;
 
+import java.util.Arrays;
 import me.donut.ramolos.Utils;
 import me.donut.ramolos.connection.KillPacket;
 
@@ -12,7 +13,7 @@ public class KillEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {"Du hast (deinen Nemesisgegner \\()?\\W*(\\w+)\\)? get.?tet.*"};
+		return new String[] {"killed"};
 	}
 
 	@Override
@@ -41,7 +42,10 @@ public class KillEvent extends ChatEvent {
 			Utils.HL_NEMESIS[0], Utils.HL_NEMESIS[1],
 			Utils.HL_NAME[0], Utils.HL_NAME[1]
 		};
-
+		System.out.println(match);
+		System.out.println(getRaw());
+		System.out.println(Arrays.toString(indice));
+		System.out.println(Arrays.toString(insertions));
 		return Utils.insertText(getRaw(), indice, insertions);
 	}
 

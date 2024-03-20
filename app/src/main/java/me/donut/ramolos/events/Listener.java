@@ -11,6 +11,7 @@ import me.donut.ramolos.events.chat.DeathEvent;
 import me.donut.ramolos.events.chat.ItemEvent;
 import me.donut.ramolos.events.chat.JoinEvent;
 import me.donut.ramolos.events.chat.KillEvent;
+import me.donut.ramolos.events.chat.LanguageEvent;
 import me.donut.ramolos.events.chat.ParticipateEvent;
 
 public class Listener {
@@ -23,6 +24,7 @@ public class Listener {
 		registerChatEvent(new ItemEvent());
 		registerChatEvent(new JoinEvent());
 		registerChatEvent(new ParticipateEvent());
+		registerChatEvent(new LanguageEvent());
 	}
 
 	public void registerChatEvent(ChatEvent event) {
@@ -30,7 +32,6 @@ public class Listener {
 	}
 
 	public void callChatEvent(String text) {
-
 		LogWatcher lw = Ramolos.getInstance().getLogWatcher();
 		lw.addLineRead(1);
 
@@ -57,11 +58,11 @@ public class Listener {
 		for (int i = (hasPrefix ? 5 : 4); i < split.length; i++)
 			message += split[i] + " ";
 		if (message.length() > 0) message = message.substring(0, message.length() - 1);
-		
 		for (ChatEvent event : chatEvents) {
 			if (hasPrefix != event.hasPrefix()) continue;
-			for (int i = 0; i < event.getTranslationKeys().length; i++) {
-				String regex = event.getTranslationKeys()[i];
+			String[] translationKeys = event.getTranslationKeys();
+			for (int i = 0; i < translationKeys.length; i++) {
+				String regex = Ramolos.getInstance().getTranslator().translate(translationKeys[i]);
 				final Pattern pattern = Pattern.compile(regex);
 				final Matcher matcher = pattern.matcher(message);
 
