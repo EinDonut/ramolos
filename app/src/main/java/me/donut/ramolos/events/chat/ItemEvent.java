@@ -2,7 +2,12 @@ package me.donut.ramolos.events.chat;
 
 import java.util.regex.Matcher;
 
+import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Utils;
+import me.donut.ramolos.stats.Statistic;
+import me.donut.ramolos.stats.StatisticManager;
+import me.donut.ramolos.stats.Statistic.StatisticType;
+import me.donut.ramolos.stats.types.CounterStatistic;
 
 public class ItemEvent extends ChatEvent {
 
@@ -43,7 +48,22 @@ public class ItemEvent extends ChatEvent {
 			Utils.HL_ITEM[0], Utils.HL_ITEM[1]
 		};
 
+		Ramolos.getInstance().getAxeDetector().onItem(item);
+		StatisticType statsType = StatisticType.valueOf("ITEM_" + item.name());
+		if (statsType != null) {
+			StatisticManager sm = Ramolos.getInstance().getStatisticManager();
+			Statistic stat = sm.getStatistic(statsType);
+			if (stat != null && stat instanceof CounterStatistic)
+				((CounterStatistic) stat).increment();
+		}
+
+
 		return Utils.insertText(getRaw(), indice, insertions);
+	}
+
+	@Override
+	public boolean interruptsAFK() {
+		return true;
 	}
 
 	public Item getItem() {

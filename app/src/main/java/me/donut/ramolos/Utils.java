@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -14,6 +15,7 @@ import javax.swing.ImageIcon;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 
 public class Utils {
 
@@ -26,13 +28,16 @@ public class Utils {
 	public static final String COLOR_PLACEHOLDER = "<html><font color='%s'>%s</font></html>";
 	public static final String COLOR_RED = "#bd3c5f";
 	public static final String COLOR_GREEN = "#239E62";
+	public static final String COLOR_FG = "#BBBBBB";
+	public static final String COLOR_HIGHLIGHT = "#568AF2";
+
+	private static Clip clip;
 	
 	public static ImageIcon getIcon(String path) {
         URL imgURL = Utils.class.getResource(path);
         return imgURL == null ? null : new ImageIcon(imgURL);
     }
 
-	@SuppressWarnings("rawtypes")
 	public static <E extends Enum<?>, C extends Class> int getIndexByValue(C type, E instance) {
 		if (!type.isEnum()) return -1;
 		for (int i = 0; i < type.getEnumConstants().length; i++) {
@@ -40,6 +45,10 @@ public class Utils {
 			if (o == instance) return i;
 		}
 		return -1;
+	}
+
+	public static String getDateString() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 	}
 
 	public static ArrayList<String> readRessource(String path) {
@@ -89,6 +98,8 @@ public class Utils {
 	}
 
 	public static void playNotificationSound() {
+		if (clip != null && clip.isActive()) clip.close();
+
 		URL url;
 		int sound = Ramolos.getInstance().getSettings().getNotificationSound();
 		float volume = Ramolos.getInstance().getSettings().getNotificationVolume() / 100.0f;
@@ -96,7 +107,7 @@ public class Utils {
 		try {
 			url = Utils.class.getResource("/sounds/notif" + sound + ".wav").toURI().toURL();
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);  
-			Clip clip = AudioSystem.getClip();
+			clip = AudioSystem.getClip();
 			clip.open(audioIn);
 			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
     		float range = gainControl.getMaximum() - gainControl.getMinimum();

@@ -2,8 +2,11 @@ package me.donut.ramolos;
 
 import me.donut.ramolos.connection.Connector;
 import me.donut.ramolos.connection.Updater;
-import me.donut.ramolos.events.InactiveTimer;
+import me.donut.ramolos.events.AxeDetector;
+import me.donut.ramolos.events.Ticker;
 import me.donut.ramolos.events.Listener;
+import me.donut.ramolos.stats.DatabaseConnection;
+import me.donut.ramolos.stats.StatisticManager;
 import me.donut.ramolos.window.Window;
 
 public class Ramolos {
@@ -13,11 +16,13 @@ public class Ramolos {
 	private Settings settings;
 	private LogWatcher logWatcher;
 	private Listener listener;
-	private InactiveTimer afkTimer;
+	private Ticker afkTimer;
 	private Connector connector;
 	private Translator translator;
 	private ToastNotifier toastNotifier;
-	// private DatabaseConnection dbConnection;
+	private DatabaseConnection dbConnection;
+	private StatisticManager statisticManager;
+	private AxeDetector axeDetector;
 	private Setup setup;
 	private Updater updater;
 
@@ -25,21 +30,21 @@ public class Ramolos {
 		instance = this;
 		settings = new Settings();
 		updater = new Updater();
+		statisticManager = new StatisticManager();
 		window = new Window();
 		logWatcher = new LogWatcher();
 		listener = new Listener();
-		afkTimer = new InactiveTimer();
+		afkTimer = new Ticker();
 		connector = new Connector();
 		translator = new Translator();
 		toastNotifier = new ToastNotifier();
-		// dbConnection = new DatabaseConnection();
+		dbConnection = new DatabaseConnection();
+		axeDetector = new AxeDetector();
 		setup = new Setup();
 
 		afkTimer.start();
 		window.showOutdatedClientMessage();
 		window.showChangelog();
-
-		toastNotifier.sendNotification("JoinMe", "DerDonut läd zum RageModeFFA Spielen ein!");
 	}
 
 	public static void main(String[] args) {
@@ -55,7 +60,9 @@ public class Ramolos {
 		connector.disconnect();
 		settings.setWindowLocation(window.getLocation());
 		toastNotifier.removeTrayIcon();
-		// dbConnection.disconnect();
+		statisticManager.saveStatsFiltering();
+		dbConnection.writeStats();
+		dbConnection.disconnect();
 	}
 
 	public Window getWindow() {
@@ -74,12 +81,16 @@ public class Ramolos {
 		return listener;
 	}
 
-	public InactiveTimer getInactiveTimer() {
+	public Ticker getInactiveTimer() {
 		return afkTimer;
 	}
 
 	public Connector getConnector() {
 		return connector;
+	}
+
+	public DatabaseConnection getDatabaseConnection() {
+		return dbConnection;
 	}
 
 	public Setup getSetup() {
@@ -96,5 +107,13 @@ public class Ramolos {
 
 	public ToastNotifier getToastNotifier() {
 		return toastNotifier;
+	}
+
+	public StatisticManager getStatisticManager() {
+		return statisticManager;
+	}
+
+	public AxeDetector getAxeDetector() {
+		return axeDetector;
 	}
 }

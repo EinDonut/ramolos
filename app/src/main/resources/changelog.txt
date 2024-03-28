@@ -1,6 +1,5 @@
 • Fixed ChatStatistic "Lines transmitted"
-• Added 5 Soundeffects
-• Added Selection/Volume control settings for Sounds
-• Added SoundPacket
+• Added SoundPacket + 5 Soundeffects
 • Added language Support (de,en,at,es,fr)
 • Added Toast notifier
+• Added Statistics

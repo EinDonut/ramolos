@@ -4,6 +4,7 @@ language-change;Deine Sprache ist nun (Deutsch \(Deutschland\));Your language is
 player-died;Du bist (gestorben);You (died);Tu es (mort);Du bist (gstorbn);Has (muerto)
 killed-by;Du wurdest von \W*(\w+) get.?tet.*;You were killed by \W*(\w+).*;Tu as été tué par \W*(\w+).*;Du bist von \W*(\w+) getötet wordn.*;Has sido asesinado por \W*(\w+).*
 killed;Du hast (deinen Nemesisgegner \()?\W*(\w+)\)? get.?tet.*;You have killed (your nemesis opponent \()?\W*(\w+)\)?.*;Tu as tué (ta némésis \()?\W*(\w+)\)?.*;Du h[ao]st (deinen Nemesisgegner \()?\W*(\w+)\)? get.?tet.*;Has matado a (tu némesis \()?\W*(\w+)\)?.*
+killstreak;^(\d) Kills in Folge!;x;x;x;x
 item-mine;Du hast eine (Landmine) erhalten;You have received a (land mine);Tu as reçu une (mine terrestre);Du host a (Londmine) kregt;Has recibido una (mina terrestre)
 item-speed;Deine (Geschwindigkeit) wurde für 20 Sekunden stark erh.?ht;Your (speed) was drastically increased for 20 seconds;Ta (rapidité) a été nettement augmentée pendant 20 secondes;Dei (Gschwindigkeit) is fia 20 Sekundn stork erh.?ht wordn;Tu (velocidad) ha aumentado enormemente durante 20 segundos
 item-dogs;Eine (Hundestaffel) unterst.?tzt dich nun im Kampf;A (group of dogs) will now support you in battle;Une (brigade canine) t'aide maintenant dans le combat;A (Hundestoffl) untast.?tzt di jetz im Kompf;Ahora, un (grupo de perros) te apoyará en tus batallas

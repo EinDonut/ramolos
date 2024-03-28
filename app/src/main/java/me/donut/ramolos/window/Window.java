@@ -13,14 +13,12 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
@@ -63,13 +61,13 @@ public class Window extends JFrame {
 		if (settings.getWindowLocation() == null) setLocationRelativeTo(null);
 		else setLocation(settings.getWindowLocation());
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				toFront();
-				requestFocus();
-			}
-		});
+		// SwingUtilities.invokeLater(new Runnable() {
+		// 	@Override
+		// 	public void run() {
+		// 		toFront();
+		// 		requestFocus();
+		// 	}
+		// });
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -167,7 +165,10 @@ public class Window extends JFrame {
 		}
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try { 
-				Desktop.getDesktop().browse(new URI(Updater.URL_BASE + Updater.URL_DOWNLOAD));
+				Desktop.getDesktop().browse(new URI(
+						Updater.URL_BASE 
+						+ Updater.URL_DOWNLOAD.replace("$", "_" + updater.getLatestVersion().replaceAll("\\.", "_"))
+					));
 				Ramolos.getInstance().terminate();
 				dispose();
 				return; 
@@ -180,7 +181,7 @@ public class Window extends JFrame {
 
 	public void showChangelog() {
 		Updater updater = Ramolos.getInstance().getUpdater();
-		if (!updater.shouldSeeChangelog()) return;
+		if (!updater.shouldSeeChangelog() || updater.isDevMode()) return;
 		
 		JOptionPane.showMessageDialog(frame, updater.getChangelog(), 
 			"Changelog - " + updater.getCurrentVersion(), JOptionPane.PLAIN_MESSAGE);

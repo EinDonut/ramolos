@@ -361,7 +361,7 @@ public class SettingsTab extends JPanel {
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		listScroller.setBorder(null);
 		listScroller.setPreferredSize(new Dimension(398, 466));
-		listScroller.getVerticalScrollBar().setUnitIncrement(16);
+		listScroller.getVerticalScrollBar().setUnitIncrement(14);
 		add(listScroller);
 	}
 

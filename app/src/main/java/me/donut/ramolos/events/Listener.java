@@ -72,7 +72,7 @@ public class Listener {
 				boolean sent = Ramolos.getInstance().getConnector().isConnected() && event.getsSent();
 				Ramolos.getInstance().getWindow().getChatTab().appendLine(event.analyze(matcher, i), sent);
 				lw.addLinesEvaluated(1);
-				Ramolos.getInstance().getInactiveTimer().wake();
+				if (event.interruptsAFK()) Ramolos.getInstance().getInactiveTimer().wake();
 				return;
 			}
 		}

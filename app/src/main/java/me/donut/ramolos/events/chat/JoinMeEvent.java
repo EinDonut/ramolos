@@ -23,6 +23,11 @@ public class JoinMeEvent extends ChatEvent {
 	}
 
 	@Override
+	public boolean interruptsAFK() {
+		return false;
+	}
+
+	@Override
 	public String analyze(Matcher match, int key) {
 		String sender = match.group(1);
 

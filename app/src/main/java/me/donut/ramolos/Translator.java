@@ -39,7 +39,8 @@ public class Translator {
 		if (translationLines.size() < 2) return;
 		ArrayList<String> langKeys = new ArrayList<String>(Arrays.asList(translationLines.get(0).split(";")));
 		int languageIndex = langKeys.indexOf(language.name());
-		for (String line : translationLines) {
+		for (int i = 1; i < translationLines.size(); i++) {
+			String line = translationLines.get(i);
 			String[] split = line.split(";");
 			String translationKey = split[0];
 			if (languageIndex >= split.length) continue;
@@ -47,12 +48,12 @@ public class Translator {
 
 			if (translationKey.equals(DETECTION_KEY)) {
 				detectionStrings.clear();
-				for (int i = 1; i < split.length && i < langKeys.size(); i++)
-					detectionStrings.add(split[i]);
+				for (int o = 1; o < split.length && o < langKeys.size(); o++)
+					detectionStrings.add(split[o]);
 			} else if (translationKey.equals(LANGUAGE_CHANGE_KEY)) {
 				languageChangeMessages.clear();
-				for (int i = 1; i < split.length && i < langKeys.size(); i++)
-					languageChangeMessages.add(split[i]);
+				for (int o = 1; o < split.length && o < langKeys.size(); o++)
+					languageChangeMessages.add(split[o]);
 			}
 		}
 	}

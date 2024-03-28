@@ -33,6 +33,8 @@ public class Settings {
 	private Point windowLocation;
 	private boolean useToast;
 
+	public String mcDir;
+
 	private final String CLIENT_AUTO = "settings.autoDetect.client";
 	private final String OS_AUTO = "settings.autoDetect.os";
 	private final String CLIENT = "settings.client";
@@ -51,6 +53,7 @@ public class Settings {
 
 	public Settings() {
 		initPreferences();
+		generatePaths();
 	}
 
 	private void initPreferences() {
@@ -239,15 +242,19 @@ public class Settings {
 		return validPath;
 	}
 
+	public String getMcDir() {
+		return mcDir;
+	}
+
 	private String[] generatePaths() {
 		String[] result = new String[Client.values().length];
-		String mcdir = "";
+		mcDir = "";
 
 		for (String pathPartOs : osSystem.path) {
-			mcdir += (pathPartOs.equals("&home&")) ? System.getProperty("user.home") : pathPartOs;	
-			mcdir += File.separator;
+			mcDir += (pathPartOs.equals("&home&")) ? System.getProperty("user.home") : pathPartOs;	
+			mcDir += File.separator;
 		}
-		if (mcdir.endsWith(File.separator)) mcdir = mcdir.substring(0, mcdir.length() - 1);
+		if (mcDir.endsWith(File.separator)) mcDir = mcDir.substring(0, mcDir.length() - 1);
 
 		for (int i = 0; i < result.length; i++) {
 			Client c = Client.values()[i];
@@ -256,7 +263,7 @@ public class Settings {
 			for (String pathPart : c.getPath()) {
 				path += pathPart.equals("&home&") ? System.getProperty("user.home") : "";
 				if (!pathPart.equals("&home&"))
-					path += pathPart.equals("&mcdir&") ? mcdir : pathPart;
+					path += pathPart.equals("&mcdir&") ? mcDir : pathPart;
 				path += pathPart.endsWith(".log") ? "" : File.separator;
 			}
 			result[i] = path;
@@ -308,6 +315,10 @@ public class Settings {
 	public void setLastUsedVersion(String lastVersion) {
 		this.lastVersion = lastVersion;
 		prefs.put(LAST_VERSION, lastVersion);
+	}
+
+	public Preferences getPreferences() {
+		return prefs;
 	}
 
 	public enum OsSystem {

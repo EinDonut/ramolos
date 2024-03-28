@@ -2,9 +2,12 @@ package me.donut.ramolos.events.chat;
 
 import java.util.regex.Matcher;
 
-import java.util.Arrays;
+import me.donut.ramolos.Ramolos;
 import me.donut.ramolos.Utils;
 import me.donut.ramolos.connection.KillPacket;
+import me.donut.ramolos.stats.AdditionalStats;
+import me.donut.ramolos.stats.Statistic.StatisticType;
+import me.donut.ramolos.stats.types.CounterStatistic;
 
 public class KillEvent extends ChatEvent {
 
@@ -13,7 +16,7 @@ public class KillEvent extends ChatEvent {
 
 	@Override
 	public String[] getTranslationKeys() {
-		return new String[] {"killed"};
+		return new String[] { "killed" };
 	}
 
 	@Override
@@ -25,6 +28,11 @@ public class KillEvent extends ChatEvent {
 	public boolean getsSent() {
 		return true;
 	}
+	
+	@Override
+	public boolean interruptsAFK() {
+		return true;
+	}
 
 	@Override
 	public String analyze(Matcher match, int key) {
@@ -32,6 +40,8 @@ public class KillEvent extends ChatEvent {
 		nemesis = match.group(1) != null;
 
 		new KillPacket(opponent, nemesis);
+		((CounterStatistic) statsManager.getStatistic(StatisticType.KILLS)).increment();
+		if (nemesis) ((CounterStatistic) statsManager.getStatistic(StatisticType.NEMESIS)).increment();
 
 		int[] indice = new int[] {
 			nemesis ? match.start(1) : 0, nemesis ? match.end(1) - 2 : 0,
@@ -42,10 +52,10 @@ public class KillEvent extends ChatEvent {
 			Utils.HL_NEMESIS[0], Utils.HL_NEMESIS[1],
 			Utils.HL_NAME[0], Utils.HL_NAME[1]
 		};
-		System.out.println(match);
-		System.out.println(getRaw());
-		System.out.println(Arrays.toString(indice));
-		System.out.println(Arrays.toString(insertions));
+		
+		Ramolos.getInstance().getAxeDetector().onKill();
+		AdditionalStats.onKill();
+
 		return Utils.insertText(getRaw(), indice, insertions);
 	}
 

@@ -15,7 +15,7 @@ public class Updater {
 
 	public static final String URL_BASE = "https://ragearrows.de/media/minecraft/ramolos/";
 	public static final String URL_VERSION = "version.txt";
-	public static final String URL_DOWNLOAD = "Ramolos.jar";
+	public static final String URL_DOWNLOAD = "Ramolos$.jar";
 	private String version = "";
 	private String latest_version = "";
 	private String build_time = "";

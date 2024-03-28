@@ -25,6 +25,11 @@ public class LanguageEvent extends ChatEvent {
 	}
 
 	@Override
+	public boolean interruptsAFK() {
+		return false;
+	}
+
+	@Override
 	public String analyze(Matcher match, int key) {
 		int[] indice = new int[] {
 			match.start(1), match.end(1)
