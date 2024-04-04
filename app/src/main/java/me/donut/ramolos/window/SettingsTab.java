@@ -326,7 +326,8 @@ public class SettingsTab extends JPanel {
 			JOptionPane.showMessageDialog(Ramolos.getInstance().getWindow(), 
 				"Gradle Shadow - johnrengelman\n" +
 				"FlatLaf - JFormDesigner\n" + 
-				"One Dark Scheme - Mark Skelton", 
+				"One Dark Scheme - Mark Skelton\n" + 
+				"SQLite JDBC Crypt - Villena Guillaume",
 				"Verwendete Open Source Software", JOptionPane.PLAIN_MESSAGE);
 		});
 

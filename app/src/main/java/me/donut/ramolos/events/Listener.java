@@ -41,11 +41,12 @@ public class Listener {
 		int time = 0;
 		
 		String[] split = text.split(" ");
-		if (split.length < 5) return;
+		if (split.length < 6) return;
 		if (split[0].length() != 10) return;
 		if (!split[2].equals("thread/INFO]:")) return;
-		if (!split[3].equals("[CHAT]")) return;
-		hasPrefix = split[4].equals("[RageMode]");
+		boolean newerVersion = split[3].equals("[System]");
+		if (!split[newerVersion ? 4 : 3].equals("[CHAT]")) return;
+		hasPrefix = split[newerVersion ? 5 : 4].equals("[RageMode]");
 		timeString = split[0].substring(1, split[0].length() - 2);
 		String[] timeSplit = timeString.split(":");
 		if (timeSplit.length != 3) return;
@@ -55,7 +56,7 @@ public class Listener {
 		time = Integer.valueOf(timeSplit[0]) * 60 * 60
 			 + Integer.valueOf(timeSplit[1]) * 60
 			 + Integer.valueOf(timeSplit[2]);
-		for (int i = (hasPrefix ? 5 : 4); i < split.length; i++)
+		for (int i = (hasPrefix ? 5 : 4) + (newerVersion ? 1 : 0); i < split.length; i++)
 			message += split[i] + " ";
 		if (message.length() > 0) message = message.substring(0, message.length() - 1);
 		for (ChatEvent event : chatEvents) {

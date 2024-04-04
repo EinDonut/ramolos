@@ -54,6 +54,7 @@ public class KillEvent extends ChatEvent {
 		};
 		
 		Ramolos.getInstance().getAxeDetector().onKill();
+		Ramolos.getInstance().getPlayerStats().incrementStats(opponent, 1, 0);
 		AdditionalStats.onKill();
 
 		return Utils.insertText(getRaw(), indice, insertions);

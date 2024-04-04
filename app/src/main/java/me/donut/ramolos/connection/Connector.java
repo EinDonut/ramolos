@@ -178,9 +178,8 @@ public class Connector {
 			String inputLine;
 			try {
 				while ((inputLine = br.readLine()) != null) {
-					// System.out.println("> " + inputLine);
 					String[] args = inputLine.split(";");
-					if (args.length <= 1) continue;
+					if (args.length < 1) continue;
 					int packetID = 0;
 					try { packetID = Integer.valueOf(args[0]); }
 					catch (NumberFormatException ex) { continue; }
@@ -197,6 +196,12 @@ public class Connector {
 							break;
 						case 7:
 							new AdminControlPacket(args);
+							break;
+						case 8:
+							new NotificationPacket(args);
+							break;
+						case 9:
+							new DisconnectPacket(args);
 							break;
 						default:
 							continue;

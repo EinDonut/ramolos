@@ -30,7 +30,6 @@ public class AverageStatistic extends Statistic {
 	@Override
 	public void update(boolean displayOnly, boolean ignoreDependencies) {
 		if (!displayOnly) {
-			System.out.println(values[INTERVAL_TODAY] + " " + getStats(target, INTERVAL_TODAY));
 			values[INTERVAL_TODAY] += getStats(target, INTERVAL_TODAY);
 			values[INTERVAL_30_D] += getStats(target, INTERVAL_30_D);
 			values[INTERVAL_ALLTIME] += getStats(target, INTERVAL_ALLTIME);

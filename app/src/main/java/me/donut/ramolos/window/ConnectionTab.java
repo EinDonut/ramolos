@@ -216,7 +216,6 @@ public class ConnectionTab extends JPanel {
 		add(serverMessage);
 
 		updateConnectionStatus(false);
-		updateServerMessage("Testmessage!", Utils.COLOR_GREEN);
 	}
 
 	public void updateConnectionStatus(boolean connected) {

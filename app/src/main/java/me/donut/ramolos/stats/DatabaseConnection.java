@@ -4,6 +4,7 @@ import java.io.File;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
@@ -35,6 +37,7 @@ public class DatabaseConnection {
 	private String filePath;
 	private String dbDate;
 	private int dbCount;
+	private int autoSaveCounter;
 	private Preferences prefs = Ramolos.getInstance().getSettings().getPreferences();
 
 	public DatabaseConnection() {
@@ -107,6 +110,7 @@ public class DatabaseConnection {
 		if (!tablesExists) {
 			String defaultStats = "";
 			for (StatisticType type : StatisticManager.defaultStats) {
+				if (!type.isSaved()) continue;
 				defaultStats += type.name() + " INT, ";
 			}
 			if (defaultStats.endsWith(", ")) 
@@ -117,6 +121,8 @@ public class DatabaseConnection {
 				conn.setAutoCommit(false);
 				cstmt.addBatch("CREATE TABLE IF NOT EXISTS stats_alltime (" + defaultStats + ");");
 				cstmt.addBatch("CREATE TABLE IF NOT EXISTS stats (date DATE, " + defaultStats + ");");
+				cstmt.addBatch("CREATE TABLE IF NOT EXISTS players (uuid TEXT(32), name TEXT(16), date DATE);");
+				cstmt.addBatch("CREATE TABLE IF NOT EXISTS player_stats (uuid TEXT(32) UNIQUE PRIMARY KEY, kills INT, deaths INT);");
 				cstmt.executeBatch();
 				conn.commit();
 				conn.setAutoCommit(true);
@@ -140,6 +146,7 @@ public class DatabaseConnection {
 
 			conn.setAutoCommit(false);
 			for (StatisticType type : allTypes) {
+				if (!type.isSaved()) continue;
 				stmt.addBatch("ALTER TABLE stats_alltime ADD " + type.name() + " INT;");
 				stmt.addBatch("ALTER TABLE stats ADD " + type.name() + " INT;");
 			}
@@ -184,6 +191,7 @@ public class DatabaseConnection {
 			if (interval == Statistic.INTERVAL_TODAY) dailyValuesLoaded = true;
 			else if (interval == Statistic.INTERVAL_ALLTIME) alltimeValuesLoaded = true;
 			for (Statistic stat : stats) {
+				if (!stat.getType().isSaved()) continue;
 				try { stat.addRawValue(interval, rs.getInt(stat.getType().name()));	}
 				catch (SQLException ex) { ex.printStackTrace(); }
 			}
@@ -191,8 +199,13 @@ public class DatabaseConnection {
 	}
 
 	public void checkTime() {
+		if (!Ramolos.getInstance().getInactiveTimer().isAFK()) autoSaveCounter++;
+		else autoSaveCounter = 0;
 		String newDate = Utils.getDateString();
-		if (newDate.equals(dailyDate)) return;
+		if (newDate.equals(dailyDate) && autoSaveCounter < 4 * 5) {
+			if (autoSaveCounter == 4 * 5) autoSaveCounter = 0;
+			return;
+		}
 		writeStats();
 		readStats();
 	}
@@ -209,6 +222,7 @@ public class DatabaseConnection {
 
 			for (int i = 0; i < stats.length; i++) {
 				Statistic stat = stats[i];
+				if (!stat.getType().isSaved()) continue;
 
 				update += stat.getType().name() + " = " + stat.values[interval];
 				insertColumns += stat.getType().name();
@@ -246,5 +260,55 @@ public class DatabaseConnection {
 				stmt.close();
 			} catch (SQLException ex) { ex.printStackTrace(); }
 		}
+
+		// PLAYER STATS
+		try {
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO player_stats (uuid, kills, deaths) VALUES (?, ?, ?) ON CONFLICT(uuid) DO UPDATE SET kills = ?, deaths = ?;");
+			for (Map.Entry<String, int[]> entry : Ramolos.getInstance().getPlayerStats().getStats().entrySet()) {
+				String uuid = entry.getKey();
+				int[] playerStats = entry.getValue();
+				if (uuid.length() != 32 || playerStats.length != 3) continue;
+				if (playerStats[0] == 0 && playerStats[1] == 0) continue;
+
+				ps.setString(1, uuid);
+				ps.setInt(2, playerStats[0]);
+				ps.setInt(3, playerStats[1]);
+				ps.setInt(4, playerStats[0]);
+				ps.setInt(5, playerStats[1]);
+				ps.addBatch();
+			}
+			ps.executeBatch();
+		} catch (SQLException ex) { ex.printStackTrace(); }
+	}
+
+	public String readPlayer(String name) {
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM players WHERE UPPER(name) = '" + name.toUpperCase() + "';");
+
+			if (!rs.next()) return null;
+			return rs.getString("uuid");
+		} catch (SQLException ex) { ex.printStackTrace(); }
+		return null;
+	}
+
+	public void addPlayer(String uuid, String name) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute(String.format(
+				"INSERT INTO players (uuid, name, date) VALUES ('%s', '%s', date());",
+				uuid, name));
+			stmt.close();
+		} catch (SQLException ex) { ex.printStackTrace(); }
+	}
+
+	public int[] getPlayerStats(String uuid) {
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(String.format(
+				"SELECT * FROM player_stats where uuid = '%s';", uuid));
+			if (rs.next()) return new int[] { rs.getInt("kills"), rs.getInt("deaths"), 0 };			
+		} catch (SQLException ex) { ex.printStackTrace(); }
+		return null;
 	}
 }

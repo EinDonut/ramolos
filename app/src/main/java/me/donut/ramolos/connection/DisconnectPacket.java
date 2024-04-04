@@ -2,14 +2,14 @@ package me.donut.ramolos.connection;
 
 import me.donut.ramolos.Ramolos;
 
-public class TerminatePacket extends Packet {
+public class DisconnectPacket extends Packet {
 
 	@Override
 	public int getID() {
-		return 6;
+		return 9;
 	}
 
-	public TerminatePacket(String[] args) {
+	public DisconnectPacket(String[] args) {
 		Ramolos.getInstance().getConnector().disconnect();
 	}
 }

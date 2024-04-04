@@ -2,4 +2,7 @@
 • Added SoundPacket + 5 Soundeffects
 • Added language Support (de,en,at,es,fr)
 • Added Toast notifier
-• Added Statistics
+• Added Statistics (beta)
+• Added Player Statistics (beta)
+• Fixed SoundPacket
+• Added DisconnectPacket

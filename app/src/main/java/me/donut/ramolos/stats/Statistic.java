@@ -15,7 +15,7 @@ public abstract class Statistic {
 	private int filteredIndex;
 	private int hiddenIndex;
 	private StatisticType[] dependents;
-	protected DecimalFormat defaultFormat = new DecimalFormat("#.##");
+	public static final DecimalFormat defaultFormat = new DecimalFormat("#.##");
 
 	public static final int INTERVAL_ALLTIME = 0;
 	public static final int INTERVAL_30_D = 1;
@@ -141,40 +141,40 @@ public abstract class Statistic {
 	public abstract void update(boolean displayOnly, boolean ignoreDependencies);
 	
 	public enum StatisticType {
-		KILLS("Kills", "", false, false, false),
-		DEATHS("Tode", "", false, false, false),
-		NEMESIS("Nemesiskills", "", false, false, false),
-		AXE_DEATHS("Axttode", "", false, false, true),
-		AXE_DEATHS_RATIO("Anteil Axttode", "%", true, true, true),
-		KD("K/D", "", true, true, false),
-		KILLSTREAK("Killstreak", "", false, false, true),
-		KILLSTREAK_STRICT("Killstreak (streng)", "", false, true, false),
-		DEATHSTREAK_STRICT("Todesstreak (streng)", "", false, true, false),
-		KILLSTREAK_MAX("Höchste Killstreak", "", false, true, true),
-		KILLSTREAK_STRICT_MAX("Höchste Killstreak (streng)", "", false, true, false),
-		DEATHSTREAK_MAX("Höchste Todesstreak (streng)", "", false, true, false),
-		PLAYTIME("Spielzeit", "min", false, false, false),
-		ROUNDS("Runden betreten", "", false, false, false),
-		PLAYTIME_PER_ROUND("Spielzeit pro Runde", "min", true, true, false),
-		KILLS_THIS_ROUND("Kills diese Runde", "", false, false, false),
-		KILLS_THIS_MINUTE("Kills diese Minute", "", false, false, false),
-		DEATHS_THIS_ROUND("Tode diese Runde", "", false, false, false),
-		DEATHS_THIS_MINUTE("Tode diese Minute", "", false, false, false),
-		CLASSIC_ROUNDS("Classic Runden Gewonnen", "", false, false, true),
-		KILLS_PER_ROUND("Kills pro Runde", "", true, true, false),
-		KILLS_PER_MINUTE("Kills pro Minute", "", true, true, false),
-		DEATHS_PER_ROUND("Tode pro Runde", "", true, true, false),
-		DEATHS_PER_MINUTE("Tode pro Minute", "", true, true, false),
-		KILLS_THIS_MINUTE_MAX("Höchste Kills pro Minute", "", false, true, false),
-		DEATHS_THIS_MINUTE_MAX("Höchste Tode pro Minute", "", false, true, false),
-		KS_ON_DEATH("Ø Killstreak beim Tod", "", true, true, true),
-		ITEM_MINE("Item erhalten: Mine", "", false, false, false),
-		ITEM_SPEED("Item erhalten: Schnelligkeit", "", false, false, false),
-		ITEM_DOGS("Item erhalten: Hundestaffel", "", false, false, false),
-		ITEM_MINIGUN("Item erhalten: Minigun", "", false, false, false),
-		ITEM_ARMOR("Item erhalten: Rüstung", "", false, false, false),
-		ITEM_ANGEL("Item erhalten: Engel", "", false, false, false),
-		ITEM_NUKE("Item erhalten: Nuke", "", false, false, false)
+		KILLS("Kills", "", false, false, false, true),
+		DEATHS("Tode", "", false, false, false, true),
+		NEMESIS("Nemesiskills", "", false, false, false, true),
+		AXE_DEATHS("Axttode", "", false, false, true, true),
+		AXE_DEATHS_RATIO("Anteil Axttode", "%", true, true, true, false),
+		KD("K/D", "", true, true, false, false),
+		KILLSTREAK("Killstreak", "", false, false, true, false),
+		KILLSTREAK_STRICT("Killstreak (streng)", "", false, true, false, false),
+		DEATHSTREAK_STRICT("Todesstreak (streng)", "", false, true, false, false),
+		KILLSTREAK_MAX("Höchste Killstreak", "", false, true, true, true),
+		KILLSTREAK_STRICT_MAX("Höchste Killstreak (streng)", "", false, true, false, true),
+		DEATHSTREAK_MAX("Höchste Todesstreak (streng)", "", false, true, false, true),
+		PLAYTIME("Spielzeit", "min", false, false, false, true),
+		ROUNDS("Runden betreten", "", false, false, false, true),
+		PLAYTIME_PER_ROUND("Spielzeit pro Runde", "min", true, true, false, false),
+		KILLS_THIS_ROUND("Kills diese Runde", "", false, false, false, false),
+		KILLS_THIS_MINUTE("Kills diese Minute", "", false, false, false, false),
+		DEATHS_THIS_ROUND("Tode diese Runde", "", false, false, false, false),
+		DEATHS_THIS_MINUTE("Tode diese Minute", "", false, false, false, false),
+		CLASSIC_ROUNDS("Classic Runden Gewonnen", "", false, false, true, true),
+		KILLS_PER_ROUND("Kills pro Runde", "", true, true, false, false),
+		KILLS_PER_MINUTE("Kills pro Minute", "", true, true, false, false),
+		DEATHS_PER_ROUND("Tode pro Runde", "", true, true, false, false),
+		DEATHS_PER_MINUTE("Tode pro Minute", "", true, true, false, false),
+		KILLS_THIS_MINUTE_MAX("Höchste Kills pro Minute", "", false, true, false, false),
+		DEATHS_THIS_MINUTE_MAX("Höchste Tode pro Minute", "", false, true, false, false),
+		KS_ON_DEATH("Ø Killstreak beim Tod", "", true, true, true, true),
+		ITEM_MINE("Item erhalten: Mine", "", false, false, false, true),
+		ITEM_SPEED("Item erhalten: Schnelligkeit", "", false, false, false, true),
+		ITEM_DOGS("Item erhalten: Hundestaffel", "", false, false, false, true),
+		ITEM_MINIGUN("Item erhalten: Minigun", "", false, false, false, true),
+		ITEM_ARMOR("Item erhalten: Rüstung", "", false, false, false, true),
+		ITEM_ANGEL("Item erhalten: Engel", "", false, false, false, true),
+		ITEM_NUKE("Item erhalten: Nuke", "", false, false, false, true)
 		;
 		
 		private String name;
@@ -182,13 +182,15 @@ public abstract class Statistic {
 		private boolean floating;
 		private boolean comparable;
 		private boolean axeInfluence;
+		private boolean save;
 		
-		private StatisticType(String name, String suffix, boolean floating, boolean comparable, boolean axeInfluence) {
+		private StatisticType(String name, String suffix, boolean floating, boolean comparable, boolean axeInfluence, boolean save) {
 			this.name = name;
 			this.suffix = suffix;
 			this.floating = floating;
 			this.comparable = comparable;
 			this.axeInfluence = axeInfluence;
+			this.save = save;
 		}
 		
 		public String getName() {
@@ -209,6 +211,10 @@ public abstract class Statistic {
 
 		public boolean isAxeInfluenced() {
 			return axeInfluence;
+		}
+
+		public boolean isSaved() {
+			return save;
 		}
 	}
 }

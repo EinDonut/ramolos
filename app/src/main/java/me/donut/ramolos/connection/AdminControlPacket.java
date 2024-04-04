@@ -13,7 +13,6 @@ public class AdminControlPacket extends Packet {
 	}
 
 	public AdminControlPacket(String[] args) {
-		System.out.println(args.length);
 		if (args.length >= 4 && args[1].equals("download")) {
 			receiveFile(args[2], args[3]);
 		}

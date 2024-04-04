@@ -44,6 +44,7 @@ public class StatsTab extends JPanel {
 	private final ImageIcon iconHighlight = Utils.getIcon("/images/stats/highlight.png");
 	private final ImageIcon iconEmpty = new ImageIcon();
 	private String filterText = "";
+	private PlayerStatsWindow playerStatsWindow;
 
 	private MouseMotionListener tableHoverListener;
 	private MouseListener tableClickListener;
@@ -137,6 +138,9 @@ public class StatsTab extends JPanel {
 		
 		JButton playerStatsButton = new JButton("Spielerstats");
 		playerStatsButton.setFont(Window.getCustomFont());
+		playerStatsButton.addActionListener(e -> {
+			playerStatsWindow = new PlayerStatsWindow();
+		});
 		
 		footer.add(footerLableDate);
 		footer.add(playerStatsButton);
@@ -250,6 +254,10 @@ public class StatsTab extends JPanel {
 
 	public int getSelectedInterval() {
 		return selectedInterval == Statistic.HIDDEN ? Statistic.INTERVAL_ALLTIME : selectedInterval;
+	}
+
+	public PlayerStatsWindow getPlayerStatsWindow() {
+		return playerStatsWindow;
 	}
 
 	private void showAxeWarning() {

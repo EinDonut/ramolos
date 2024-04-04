@@ -12,7 +12,7 @@ public class ParticipateEvent extends ChatEvent {
 	@Override
 	public String[] getTranslationKeys() {
 		return new String[] {
-			"\\W*(\\w+): (go!)\\W*"
+			"\\W*(\\w+): ((?i)go!)\\W*"
 		};
 	}
 

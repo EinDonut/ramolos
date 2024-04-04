@@ -41,30 +41,30 @@ public class StatisticManager {
 
 		stats.put(KILLS, new CounterStatistic(KILLS));
 		stats.put(DEATHS, new CounterStatistic(DEATHS));
-		stats.put(KD, new RatioStatistic(KD, KILLS, DEATHS));
+		stats.put(KD, new RatioStatistic(KD, KILLS, DEATHS, false));
 		stats.put(NEMESIS, new CounterStatistic(NEMESIS));
 		stats.put(AXE_DEATHS, new CounterStatistic(AXE_DEATHS));
-		stats.put(AXE_DEATHS_RATIO, new RatioStatistic(AXE_DEATHS_RATIO, AXE_DEATHS, DEATHS));
+		stats.put(AXE_DEATHS_RATIO, new RatioStatistic(AXE_DEATHS_RATIO, AXE_DEATHS, DEATHS, true));
 		stats.put(KILLSTREAK, new SimpleStatistic(KILLSTREAK));
 		stats.put(KILLSTREAK_MAX, new MaximumStatistic(KILLSTREAK_MAX, KILLSTREAK));
 		stats.put(KILLSTREAK_STRICT, new SimpleStatistic(KILLSTREAK_STRICT));
 		stats.put(KILLSTREAK_STRICT_MAX, new MaximumStatistic(KILLSTREAK_STRICT_MAX, KILLSTREAK_STRICT));
 		stats.put(KILLS_THIS_ROUND, new SimpleStatistic(KILLS_THIS_ROUND));
-		stats.put(KILLS_PER_ROUND, new RatioStatistic(KILLS_PER_ROUND, KILLS, ROUNDS));
+		stats.put(KILLS_PER_ROUND, new RatioStatistic(KILLS_PER_ROUND, KILLS, ROUNDS, false));
 		stats.put(KILLS_THIS_MINUTE, new SimpleStatistic(KILLS_THIS_MINUTE));
-		stats.put(KILLS_PER_MINUTE, new RatioStatistic(KILLS_PER_MINUTE, KILLS, PLAYTIME));
+		stats.put(KILLS_PER_MINUTE, new RatioStatistic(KILLS_PER_MINUTE, KILLS, PLAYTIME, false));
 		stats.put(KILLS_THIS_MINUTE_MAX, new MaximumStatistic(KILLS_THIS_MINUTE_MAX, KILLS_THIS_MINUTE));
 		stats.put(DEATHSTREAK_STRICT, new SimpleStatistic(DEATHSTREAK_STRICT));
 		stats.put(DEATHSTREAK_MAX, new MaximumStatistic(DEATHSTREAK_MAX, DEATHSTREAK_STRICT));
 		stats.put(DEATHS_THIS_ROUND, new SimpleStatistic(DEATHS_THIS_ROUND));
-		stats.put(DEATHS_PER_ROUND, new RatioStatistic(DEATHS_PER_ROUND, DEATHS, ROUNDS));
+		stats.put(DEATHS_PER_ROUND, new RatioStatistic(DEATHS_PER_ROUND, DEATHS, ROUNDS, false));
 		stats.put(DEATHS_THIS_MINUTE, new SimpleStatistic(DEATHS_THIS_MINUTE));
-		stats.put(DEATHS_PER_MINUTE, new RatioStatistic(DEATHS_PER_MINUTE, DEATHS, PLAYTIME));
+		stats.put(DEATHS_PER_MINUTE, new RatioStatistic(DEATHS_PER_MINUTE, DEATHS, PLAYTIME, false));
 		stats.put(DEATHS_THIS_MINUTE_MAX, new MaximumStatistic(DEATHS_THIS_MINUTE_MAX, DEATHS_THIS_MINUTE));
 		stats.put(KS_ON_DEATH, new AverageStatistic(KS_ON_DEATH, DEATHS, KILLSTREAK));
 		stats.put(PLAYTIME, new CounterStatistic(PLAYTIME));
 		stats.put(ROUNDS, new CounterStatistic(ROUNDS));
-		stats.put(PLAYTIME_PER_ROUND, new RatioStatistic(PLAYTIME_PER_ROUND, PLAYTIME, ROUNDS));
+		stats.put(PLAYTIME_PER_ROUND, new RatioStatistic(PLAYTIME_PER_ROUND, PLAYTIME, ROUNDS, false));
 		stats.put(CLASSIC_ROUNDS, new CounterStatistic(CLASSIC_ROUNDS));
 		stats.put(ITEM_MINE, new CounterStatistic(ITEM_MINE));
 		stats.put(ITEM_SPEED, new CounterStatistic(ITEM_SPEED));
@@ -123,7 +123,6 @@ public class StatisticManager {
 			if (!stat.isVisible()) value += 2;
 			result += value;
 		}
-		System.out.println(result);
 		Ramolos.getInstance().getSettings().getPreferences().put(STATS_FILTER, result);
 	}
 

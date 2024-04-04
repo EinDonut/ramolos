@@ -6,6 +6,7 @@ import me.donut.ramolos.events.AxeDetector;
 import me.donut.ramolos.events.Ticker;
 import me.donut.ramolos.events.Listener;
 import me.donut.ramolos.stats.DatabaseConnection;
+import me.donut.ramolos.stats.PlayerStats;
 import me.donut.ramolos.stats.StatisticManager;
 import me.donut.ramolos.window.Window;
 
@@ -20,6 +21,7 @@ public class Ramolos {
 	private Connector connector;
 	private Translator translator;
 	private ToastNotifier toastNotifier;
+	private PlayerStats nameResolver;
 	private DatabaseConnection dbConnection;
 	private StatisticManager statisticManager;
 	private AxeDetector axeDetector;
@@ -38,6 +40,7 @@ public class Ramolos {
 		connector = new Connector();
 		translator = new Translator();
 		toastNotifier = new ToastNotifier();
+		nameResolver = new PlayerStats();
 		dbConnection = new DatabaseConnection();
 		axeDetector = new AxeDetector();
 		setup = new Setup();
@@ -115,5 +118,9 @@ public class Ramolos {
 
 	public AxeDetector getAxeDetector() {
 		return axeDetector;
+	}
+
+	public PlayerStats getPlayerStats() {
+		return nameResolver;
 	}
 }

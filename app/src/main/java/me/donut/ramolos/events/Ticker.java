@@ -16,13 +16,13 @@ public class Ticker extends Thread {
 		while (true) {
 			try { Thread.sleep(1000); } catch (Exception e) { e.printStackTrace(); }
 
-			afkTimer += afkTimer >= AFK_TIME ? 0 : 1;
+			afkTimer += afkTimer > AFK_TIME ? 0 : 1;
 			if (afkTimer == AFK_TIME) setAFK(true);
-			else if (++activeTimer >= 60) {
+			else if (!isAFK() && ++activeTimer >= 60) {
 				activeTimer = 0;
 				AdditionalStats.onMinute();
 			}
-			if (++generalTimer >= 60) {
+			if (++generalTimer >= 15) {
 				generalTimer = 0;
 				Ramolos.getInstance().getDatabaseConnection().checkTime();
 			}
@@ -37,6 +37,7 @@ public class Ticker extends Thread {
 	public void setAFK(boolean afk) {
 		this.afk = afk;
 		Ramolos.getInstance().getWindow().getChatTab().setActive(!afk);
+		if (afk) Ramolos.getInstance().getDatabaseConnection().writeStats();
 	}
 
 	public boolean isAFK() {

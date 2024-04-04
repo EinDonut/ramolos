@@ -7,12 +7,14 @@ public class RatioStatistic extends Statistic {
 
 	private StatisticType dividend;
 	private StatisticType divisor;
+	private boolean percentage;
 
-	public RatioStatistic(StatisticType type, StatisticType dividend, StatisticType divisor) {
+	public RatioStatistic(StatisticType type, StatisticType dividend, StatisticType divisor, boolean percentage) {
 		super(type);
 
 		this.dividend = dividend;
 		this.divisor = divisor;
+		this.percentage = percentage;
 	}
 
 	@Override
@@ -21,7 +23,7 @@ public class RatioStatistic extends Statistic {
 		int divisorStats = getStats(divisor, interval);
 		if (divisorStats == 0) divisorStats = 1;
 
-		return (int) (100 * ((double) dividendStats / (double) divisorStats));
+		return (int) ((percentage ? 10000 : 100) * ((double) dividendStats / (double) divisorStats));
 	}
 
 	@Override

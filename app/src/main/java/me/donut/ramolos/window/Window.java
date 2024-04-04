@@ -171,6 +171,7 @@ public class Window extends JFrame {
 					));
 				Ramolos.getInstance().terminate();
 				dispose();
+				System.exit(0);
 				return; 
 			} catch (Exception ex) {}
 		}
